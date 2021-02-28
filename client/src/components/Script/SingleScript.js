@@ -13,7 +13,7 @@ export default function SingleScript() {
   useEffect(() => {
     const fetchData = async () => {
       await axios
-        .get(`/${id}`)
+        .get(`/scripts/${id}`)
         .then((res) => {
           setScript(res.data);
           dispatch(getScenes(res.data._id));

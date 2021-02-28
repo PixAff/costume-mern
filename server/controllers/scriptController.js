@@ -104,11 +104,10 @@ export const getScripts = async (req, res) => {
 // };
 
 export const getScript = async (req, res) => {
-  console.log("single");
   const { id } = req.params;
 
   if (!mongoose.Types.ObjectId.isValid(id))
-    return res.status(404).send(`No script with id: ${id}`);
+    return res.status(404).send(`No Single script with id: ${id}`);
 
   const script = await Script.findOne({ _id: id });
 
@@ -146,7 +145,7 @@ export const updateScript = async (req, res) => {
   const { name } = req.body;
 
   if (!mongoose.Types.ObjectId.isValid(id))
-    return res.status(404).send(`No script with id: ${id}`);
+    return res.status(404).send(`(update) No script with id: ${id}`);
 
   const updatedScript = { name, _id: id };
 

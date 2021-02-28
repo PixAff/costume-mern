@@ -13,7 +13,7 @@ export const clearScenes = () => async (dispatch) => {
 };
 
 export const getScenes = (scriptId) => async (dispatch) => {
-  const { data } = await axios.get(`/script/${scriptId}/scenes`);
+  const { data } = await axios.get(`/scenes/${scriptId}`);
   dispatch({ type: FETCH_SCENES, payload: data });
 };
 
@@ -23,10 +23,7 @@ export const getScenes = (scriptId) => async (dispatch) => {
 // };
 
 export const createScene = (scene, scriptId) => async (dispatch) => {
-  const { data } = await axios.post(`/script/${scriptId}/scene`, {
-    scene,
-    script: scriptId,
-  });
+  const { data } = await axios.post(`/scenes/${scriptId}`, scene);
   dispatch({ type: CREATE_SCENE, payload: data });
 };
 

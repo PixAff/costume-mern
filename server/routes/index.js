@@ -20,16 +20,16 @@ import {
 
 // SCRIPT
 router.get("/scripts", getScripts);
-router.get("/:id", getScript);
+router.get("/scripts/:id", getScript);
 
-router.post("/", createScript);
-router.patch("/:id", updateScript);
-router.delete("/:id", deleteScript);
-router.patch("/:id/likeScript", likeScript);
+router.post("/scripts", createScript);
+router.patch("/script/:id", updateScript);
+router.delete("/script/:id", deleteScript);
+router.patch("/script/:id/likeScript", likeScript);
 
 // SCENE
-router.get("/script/:id/scenes", getScenes);
-router.post("/script/:id/scene", createScene);
+router.get("/scenes/:scriptid", getScenes);
+router.post("/scenes/:scriptid", createScene);
 router.delete("/script/:id/scene/:id", deleteScene);
 router.patch("/scene/:id", updateScene);
 

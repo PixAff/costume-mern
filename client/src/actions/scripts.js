@@ -15,27 +15,27 @@ export const getScripts = () => async (dispatch) => {
 };
 
 export const getScript = (id) => async (dispatch) => {
-  const { data } = await axios.get(`/${id}`);
+  const { data } = await axios.get(`/scripts/${id}`);
   dispatch({ type: FETCH_ONE, payload: data });
 };
 
 export const createScript = (script) => async (dispatch) => {
-  const { data } = await axios.post("/", script);
+  const { data } = await axios.post("/scripts", script);
   dispatch({ type: CREATE, payload: data });
 };
 
 export const updateScript = (id, script) => async (dispatch) => {
-  const { data } = await axios.patch(`/${id}`, script);
+  const { data } = await axios.patch(`/script/${id}`, script);
   dispatch({ type: UPDATE, payload: data });
 };
 
 export const deleteScript = (id) => async (dispatch) => {
-  await axios.delete(`/${id}`);
+  await axios.delete(`/script/${id}`);
   dispatch({ type: DELETE, payload: id });
 };
 
 export const likeScript = (id) => async (dispatch) => {
-  const { data } = await axios.patch(`/${id}/likeScript`);
+  const { data } = await axios.patch(`/script/${id}/likeScript`);
   dispatch({ type: LIKE, payload: data });
 };
 

@@ -3,8 +3,8 @@ import Script from "../models/Script.js";
 import Scene from "../models/Scene.js";
 
 export const createScene = async (req, res) => {
-  const { sceneNumber, playDay, mood, place } = req.body.scene;
-  const { script } = req.body;
+  const { sceneNumber, playDay, mood, place } = req.body;
+  const script = req.params.scriptid;
 
   const newScene = new Scene({ sceneNumber, playDay, mood, script, place });
   try {
@@ -17,10 +17,9 @@ export const createScene = async (req, res) => {
 };
 
 export const getScenes = async (req, res) => {
-  console.log("TODO: WHY DOES ROUTING NOT WORK WITHOUT :ID");
   try {
     const scenes = await Scene.find({
-      script: req.params.id,
+      script: req.params.scriptid,
     }).sort({ sceneNumber: "asc" });
     console.log(scenes.map((scene) => scene.script));
     res.status(200).json(scenes);
