@@ -74,6 +74,7 @@ export const createScript = async (req, res) => {
 export const getScripts = async (req, res) => {
   try {
     const scripts = await Script.find();
+    console.log("Script", scripts);
     res.status(200).json(scripts);
   } catch (error) {
     res.status(404).json({ message: error.message });

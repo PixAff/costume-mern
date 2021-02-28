@@ -22,6 +22,7 @@ const scriptSchema = mongoose.Schema(
       type: Number,
       default: 0,
     },
+
     // photo: String,
     //   author: {
     //     type: mongoose.Schema.ObjectId,
@@ -104,12 +105,12 @@ scriptSchema.pre("save", async function (next) {
 //   scriptSchema.pre("find", autoPopulate);
 //   scriptSchema.pre("findOne", autoPopulate);
 
-// find reviews where the script _id === reviews script property:
-//   scriptSchema.virtual("reviews", {
-//     ref: "Review", // what model to link
-//     localField: "_id", // which field on the script
-//     foreignField: "script", // which field onn the review
-//   });
+// // find reviews where the script _id === reviews script property:
+// scriptSchema.virtual("scenes", {
+//   ref: "Scene", // what model to link
+//   localField: "_id", // which field on the script
+//   foreignField: "script", // which field onn the review
+// });
 
 const Script = mongoose.model("Script", scriptSchema);
 

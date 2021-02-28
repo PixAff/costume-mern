@@ -53,12 +53,71 @@ function MaterialTables({ script }) {
 
   const columns = [
     { title: "id", field: "id", hidden: true },
-    { title: "NR", field: "sceneNumber" },
-    { title: "Day", field: "playDay" },
-    { title: "Mood", field: "mood" },
-    { title: "Place", field: "place" },
-    { title: "Content", field: "content" },
-    { title: "Roles", field: "roles" },
+    { title: "NR", field: "sceneNumber", type: "numeric", defaultSort: "asc" },
+    {
+      title: "Day",
+      field: "playDay",
+
+      // validate: (rowData) => Boolean(parseInt(rowData.playDay)),
+
+      // validate: (rowData) =>
+      //   Boolean(parseInt(rowData.playDay))
+      //     ? true
+      //     : { isValid: false, helperText: "must be a number" },
+
+      validate: (rowData) =>
+        Boolean(parseInt(rowData.playDay)) ? "" : "Name cannot be empty",
+      sorting: false,
+    },
+
+    {
+      title: "Mood",
+      field: "mood",
+      sorting: false,
+      validate: (rowData) => Boolean(rowData.mood),
+    },
+    { title: "Place", field: "place", sorting: false },
+    { title: "Content", field: "description", sorting: false },
+    // { title: "Roles", field: "roles", sorting: false },
+  ];
+
+  const detailPanel = [
+    // {
+    //   tooltip: "ROLES",
+    //   render: (rowData) => {
+    //     return (
+    //       <div
+    //         style={{
+    //           fontSize: 16,
+    //           textAlign: "center",
+    //           color: "white",
+    //           backgroundColor: "#43A047",
+    //         }}
+    //       >
+    //         {rowData.roles}
+    //       </div>
+    //     );
+    //   },
+    // },
+    // {
+    //   icon: "favorite_border",
+    //   openIcon: "favorite",
+    //   tooltip: "Show Both",
+    //   render: (rowData) => {
+    //     return (
+    //       <div
+    //         style={{
+    //           fontSize: 16,
+    //           textAlign: "center",
+    //           color: "white",
+    //           backgroundColor: "#FDD835",
+    //         }}
+    //       >
+    //         {rowData.id} {rowData.mood}
+    //       </div>
+    //     );
+    //   },
+    // },
   ];
 
   //for error handling
@@ -73,7 +132,8 @@ function MaterialTables({ script }) {
       scene.playDay,
       scene.mood,
       scene._id,
-      scene.place
+      scene.place,
+      scene.description
     )
   );
 
@@ -82,13 +142,14 @@ function MaterialTables({ script }) {
     console.log("fetch");
   }, [fetchedScenes]);
 
-  function createData(sceneNumber, playDay, mood, id, place) {
+  function createData(sceneNumber, playDay, mood, id, place, description) {
     return {
       sceneNumber,
       playDay,
       mood,
       id,
-      content: "some more or less useful content showing up here",
+      description:
+        description || "some more or less useful content showing up here",
       roles: "Peter, Paul, Marie",
       place: place || "nice Place",
     };
@@ -96,7 +157,7 @@ function MaterialTables({ script }) {
 
   const handleRowUpdate = (newData, oldData, resolve) => {
     console.log("TODO: parseInt from Material Table in the first place");
-    newData.sceneNumber = parseInt(newData.sceneNumber);
+    // newData.sceneNumber = parseInt(newData.sceneNumber);
     newData.playDay = parseInt(newData.playDay);
     dispatch(updateScene(newData));
     //validation
@@ -136,7 +197,6 @@ function MaterialTables({ script }) {
   };
 
   const handleRowAdd = (newData, resolve) => {
-    console.log(newData);
     //     //validation
     let errorList = [];
     //     if (newData.first_name === undefined) {
@@ -226,7 +286,11 @@ function MaterialTables({ script }) {
             title={`Script - ${script.name}`}
             columns={columns}
             data={scenes}
+            detailPanel={detailPanel}
             icons={tableIcons}
+            options={{
+              sorting: true,
+            }}
             editable={{
               onRowUpdate: (newData, oldData) =>
                 new Promise((resolve) => {

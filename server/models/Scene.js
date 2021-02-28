@@ -19,6 +19,10 @@ const sceneSchema = mongoose.Schema({
     type: String,
     trim: true,
   },
+  description: {
+    type: String,
+    trim: true,
+  },
   created: {
     type: Date,
     default: Date.now,
