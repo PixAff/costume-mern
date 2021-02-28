@@ -10,4 +10,4 @@ export const UPDATE_SCENE = "UPDATE_SCENE";
 export const DELETE_SCENE = "DELETE_SCENE";
 export const FETCH_SCENE = "FETCH_SCENE";
 export const FETCH_SCENES = "FETCH_SCENES";
-export const LIKE_SCENE = "LIKE_SCENE";
+export const CLEAR_SCENES = "CLEAR_SCENES";

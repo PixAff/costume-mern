@@ -17,8 +17,12 @@ export const createScene = async (req, res) => {
 };
 
 export const getScenes = async (req, res) => {
+  console.log("TODO: WHY DOES ROUTING NOT WORK WITHOUT :ID");
   try {
-    const scenes = await Scene.find();
+    const scenes = await Scene.find({
+      script: req.params.id,
+    }).sort({ sceneNumber: "asc" });
+    console.log(scenes.map((scene) => scene.script));
     res.status(200).json(scenes);
   } catch (error) {
     res.status(404).json({ message: error.message });

@@ -4,9 +4,13 @@ import {
   DELETE_SCENE,
   FETCH_SCENE,
   FETCH_SCENES,
-  LIKE_SCENE,
+  CLEAR_SCENES,
   UPDATE_SCENE,
 } from "../constants/actionTypes";
+
+export const clearScenes = () => async (dispatch) => {
+  dispatch({ type: CLEAR_SCENES });
+};
 
 export const getScenes = (scriptId) => async (dispatch) => {
   const { data } = await axios.get(`/script/${scriptId}/scenes`);

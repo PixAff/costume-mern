@@ -223,7 +223,7 @@ function MaterialTables({ script }) {
             )}
           </div> */}
           <MaterialTable
-            title="Scenes for Script NAME"
+            title={`Script - ${script.name}`}
             columns={columns}
             data={scenes}
             icons={tableIcons}

@@ -1,5 +1,7 @@
 import { CircularProgress, Grid } from "@material-ui/core";
-import { useSelector } from "react-redux";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { clearScenes } from "../../actions/scenes";
 import useStyles from "../styles";
 
 import Script from "./ScriptCard";
@@ -7,7 +9,11 @@ import Script from "./ScriptCard";
 export default function Scripts({ setCurrentId }) {
   const scripts = useSelector((state) => state.scripts);
   const classes = useStyles();
-  // console.log("Script.js", scripts);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(clearScenes());
+  }, []);
 
   return !scripts.length ? (
     <CircularProgress />
