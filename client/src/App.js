@@ -3,11 +3,11 @@ import { Route, Switch } from "react-router-dom";
 import { Container, Grow, Grid } from "@material-ui/core";
 import { useDispatch } from "react-redux";
 
-import Scripts from "./components/Script/Scripts";
-import Form from "./components/Script/Form";
+import Scripts from "./components/script/Scripts";
+import Form from "./components/script/Form";
 import Nav from "./components/main/Nav";
 import { getScripts } from "./actions/scripts";
-import SingleScript from "./components/Script/SingleScript";
+import SingleScript from "./components/script/SingleScript";
 
 const Main = () => {
   const dispatch = useDispatch();

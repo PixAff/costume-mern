@@ -22,6 +22,8 @@ import ViewColumn from "@material-ui/icons/ViewColumn";
 // import Alert from "@material-ui/lab/Alert";
 import { useDispatch, useSelector } from "react-redux";
 import { createScene, deleteScene, updateScene } from "../../actions/scenes";
+import { Button, Fab } from "@material-ui/core";
+import RolesModal from "./RolesModal";
 
 const tableIcons = {
   Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
@@ -50,55 +52,78 @@ const tableIcons = {
 function MaterialTables({ script }) {
   const dispatch = useDispatch();
   const [scenes, setScenes] = useState([]);
+  const [allRoles, setAllRoles] = useState([]);
+  console.log(allRoles);
 
   const columns = [
     { title: "id", field: "id", hidden: true },
-    { title: "NR", field: "sceneNumber", type: "numeric", defaultSort: "asc" },
+    {
+      title: "NR",
+      field: "sceneNumber",
+      defaultSort: "asc",
+      initialEditValue: "0",
+      validate: (rowData) =>
+        /\D/.test(rowData.sceneNumber) || rowData.sceneNumber.length < 1
+          ? { isValid: false, helperText: "Please enter a number!" }
+          : true,
+    },
     {
       title: "Day",
       field: "playDay",
-
-      // validate: (rowData) => Boolean(parseInt(rowData.playDay)),
-
-      // validate: (rowData) =>
-      //   Boolean(parseInt(rowData.playDay))
-      //     ? true
-      //     : { isValid: false, helperText: "must be a number" },
-
+      initialEditValue: "0",
       validate: (rowData) =>
-        Boolean(parseInt(rowData.playDay)) ? "" : "Name cannot be empty",
-      sorting: false,
+        /\D/.test(rowData.playDay) || rowData.playDay.length < 1
+          ? { isValid: false, helperText: "Please enter a number!" }
+          : true,
     },
 
     {
       title: "Mood",
       field: "mood",
       sorting: false,
-      validate: (rowData) => Boolean(rowData.mood),
+      lookup: {
+        day: "day",
+        night: "night",
+        morning: "morning",
+        evening: "evening",
+      },
     },
     { title: "Place", field: "place", sorting: false },
     { title: "Content", field: "description", sorting: false },
-    // { title: "Roles", field: "roles", sorting: false },
+    { title: "notes", field: "notes", sorting: false },
   ];
 
   const detailPanel = [
-    // {
-    //   tooltip: "ROLES",
-    //   render: (rowData) => {
-    //     return (
-    //       <div
-    //         style={{
-    //           fontSize: 16,
-    //           textAlign: "center",
-    //           color: "white",
-    //           backgroundColor: "#43A047",
-    //         }}
-    //       >
-    //         {rowData.roles}
-    //       </div>
-    //     );
-    //   },
-    // },
+    {
+      tooltip: "ROLES",
+      icon: tableIcons.DetailPanel,
+      render: (rowData) => {
+        return (
+          <Grid
+            container
+            style={{
+              fontSize: 16,
+              textAlign: "center",
+              color: "white",
+              backgroundColor: "#43A047",
+            }}
+          >
+            <Grid item xs={1}>
+              <RolesModal key={rowData.tableData.id} scene={rowData} />
+            </Grid>
+            <Grid item xs={11}>
+              <div>
+                {rowData.roles.map((role) => (
+                  <Button key={role.name} color="inherit">
+                    {role.name}
+                  </Button>
+                ))}
+              </div>
+            </Grid>
+          </Grid>
+        );
+      },
+    },
     // {
     //   icon: "favorite_border",
     //   openIcon: "favorite",
@@ -124,6 +149,7 @@ function MaterialTables({ script }) {
   //   const [iserror, setIserror] = useState(false);
   //   const [errorMessages, setErrorMessages] = useState([]);
   const fetchedScenes = useSelector((state) => state.scenes);
+  const fetchedRoles = useSelector((state) => state.roles);
   const scriptId = script._id;
 
   const fetchedData = fetchedScenes.map((scene) =>
@@ -133,16 +159,26 @@ function MaterialTables({ script }) {
       scene.mood,
       scene._id,
       scene.place,
-      scene.description
+      scene.description,
+      fetchedRoles
     )
   );
 
   useEffect(() => {
     setScenes(fetchedData);
+    setAllRoles(fetchedRoles);
     console.log("fetch");
-  }, [fetchedScenes]);
+  }, [fetchedScenes, fetchedRoles]);
 
-  function createData(sceneNumber, playDay, mood, id, place, description) {
+  function createData(
+    sceneNumber,
+    playDay,
+    mood,
+    id,
+    place,
+    description,
+    roles
+  ) {
     return {
       sceneNumber,
       playDay,
@@ -150,14 +186,16 @@ function MaterialTables({ script }) {
       id,
       description:
         description || "some more or less useful content showing up here",
-      roles: "Peter, Paul, Marie",
+      roles: roles || [{ name: "Peter" }, { name: "Paul" }, { name: "Marie" }],
       place: place || "nice Place",
+      scriptId,
     };
   }
 
   const handleRowUpdate = (newData, oldData, resolve) => {
+    console.log(newData, oldData);
     console.log("TODO: parseInt from Material Table in the first place");
-    // newData.sceneNumber = parseInt(newData.sceneNumber);
+    newData.sceneNumber = parseInt(newData.sceneNumber);
     newData.playDay = parseInt(newData.playDay);
     dispatch(updateScene(newData));
     //validation
@@ -283,6 +321,14 @@ function MaterialTables({ script }) {
             )}
           </div> */}
           <MaterialTable
+            actions={[
+              {
+                icon: "add",
+                tooltip: "Add User",
+                isFreeAction: true,
+                onClick: (event) => alert("You want to add a new row"),
+              },
+            ]}
             title={`Script - ${script.name}`}
             columns={columns}
             data={scenes}

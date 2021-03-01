@@ -1,6 +1,7 @@
 import { CircularProgress, Grid } from "@material-ui/core";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { clearRoles } from "../../actions/roles";
 import { clearScenes } from "../../actions/scenes";
 import useStyles from "../styles";
 
@@ -13,6 +14,7 @@ export default function Scripts({ setCurrentId }) {
 
   useEffect(() => {
     dispatch(clearScenes());
+    dispatch(clearRoles());
   }, []);
 
   return !scripts.length ? (
