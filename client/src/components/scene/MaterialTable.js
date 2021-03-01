@@ -186,7 +186,7 @@ function MaterialTables({ script }) {
       id,
       description:
         description || "some more or less useful content showing up here",
-      roles: roles || [{ name: "Peter" }, { name: "Paul" }, { name: "Marie" }],
+      roles,
       place: place || "nice Place",
       scriptId,
     };
