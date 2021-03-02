@@ -14,7 +14,7 @@ import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import { deleteScript, likeScript } from "../../actions/scripts";
 
-export default function Script({ script, setCurrentId }) {
+export default function ScriptCard({ script, setCurrentId }) {
   const dispatch = useDispatch();
   const classes = useStyles();
 

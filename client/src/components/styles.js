@@ -11,8 +11,9 @@ export default makeStyles((theme) => ({
   },
   form: {
     display: "flex",
+    alignItems: "center",
     flexWrap: "wrap",
-    justifyContent: "center",
+    justifyContent: "space-between",
   },
   fileInput: {
     width: "97%",
@@ -20,6 +21,9 @@ export default makeStyles((theme) => ({
   },
   buttonSubmit: {
     marginBottom: 10,
+  },
+  textInput: {
+    flexGrow: "1",
   },
   mainContainer: {
     display: "flex",

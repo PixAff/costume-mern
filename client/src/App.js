@@ -1,50 +1,25 @@
-import { useEffect, useState } from "react";
 import { Route, Switch } from "react-router-dom";
-import { Container, Grow, Grid } from "@material-ui/core";
-import { useDispatch } from "react-redux";
 
-import Scripts from "./components/script/Scripts";
-import Form from "./components/script/Form";
 import Nav from "./components/main/Nav";
-import { getScripts } from "./actions/scripts";
 import SingleScript from "./components/script/SingleScript";
-
-const Main = () => {
-  const dispatch = useDispatch();
-  const [currentId, setCurrentId] = useState(0);
-
-  useEffect(() => {
-    dispatch(getScripts());
-  }, [currentId, dispatch]);
-
-  return (
-    <Grow in>
-      <Grid container justify="space-between" alignItems="stretch" spacing={3}>
-        <Grid item xs={12} sm={7}>
-          <Scripts setCurrentId={setCurrentId} />
-        </Grid>
-        <Grid item xs={12} sm={7}>
-          <Form currentId={currentId} setCurrentId={setCurrentId} />
-        </Grid>
-      </Grid>
-    </Grow>
-  );
-};
+import HomePage from "./components/main/Homepage";
+import ScriptsPage from "./components/main/ScriptsPage";
 
 const App = () => {
   return (
     <>
       <Nav />
-      <Container maxWidth="lg">
+      <div>
         <Switch>
-          <Route exact path="/" component={Main} />
+          <Route exact path="/" component={HomePage} />
+          <Route exact path="/scripts" component={ScriptsPage} />
           <Route
             exact
             path="/scripts/:id"
             render={(props) => <SingleScript {...props} />}
           />
         </Switch>
-      </Container>
+      </div>
     </>
   );
 };

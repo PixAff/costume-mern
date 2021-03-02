@@ -1,3 +1,4 @@
+import { Box, Grid } from "@material-ui/core";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
@@ -29,13 +30,5 @@ export default function SingleScript() {
   //   window.location.pathname.lastIndexOf("/") + 1
   // );
 
-  return (
-    <div>
-      {script && (
-        <div>
-          <MaterialTables script={script} />
-        </div>
-      )}
-    </div>
-  );
+  return <Box mx={2}>{script && <MaterialTables script={script} />}</Box>;
 }

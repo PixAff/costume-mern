@@ -6,16 +6,20 @@ import Button from "@material-ui/core/Button";
 import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";
 import { Link } from "react-router-dom";
+import { Box } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
+    marginBottom: "2rem",
   },
+
   menuButton: {
     marginRight: theme.spacing(2),
   },
+
   title: {
-    flexGrow: 1,
+    // flexGrow: 1,
   },
 }));
 
@@ -34,14 +38,39 @@ export default function ButtonAppBar() {
           >
             <MenuIcon />
           </IconButton>
-          <Typography
-            variant="h6"
-            className={classes.title}
-            component={Link}
-            to="/"
+          <Box
+            style={{ width: "100%" }}
+            display="flex"
+            justifyContent="flex-start"
           >
-            HOME
-          </Typography>
+            <Box>
+              <Button
+                color="inherit"
+                className={classes.title}
+                component={Link}
+                to="/"
+              >
+                HOME
+              </Button>
+            </Box>
+            <Box>
+              <Button
+                color="inherit"
+                className={classes.title}
+                component={Link}
+                to="/scripts"
+              >
+                SCRIPTS
+              </Button>
+            </Box>
+            <Box>
+              <Button color="inherit">Scenes</Button>
+            </Box>
+            <Box>
+              <Button color="inherit">Roles</Button>
+            </Box>
+          </Box>
+
           <Button color="inherit">Login</Button>
         </Toolbar>
       </AppBar>

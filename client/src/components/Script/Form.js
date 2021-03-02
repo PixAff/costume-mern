@@ -44,36 +44,34 @@ const Form = ({ currentId, setCurrentId }) => {
           onSubmit={handleSubmit}
         >
           <Typography variant="h6">
-            {currentId ? "Edditing" : "Creating"} a script
+            {currentId ? "Edit script name" : "Create new script"}
           </Typography>
           <TextField
+            className={classes.textInput}
             name="name"
-            variant="outlined"
+            // variant="contained"
             label="Name"
-            fullWidth
             value={scriptData.name}
             onChange={(e) =>
               setScriptData({ ...scriptData, name: e.target.value })
             }
           />
           <Button
-            className={classes.buttonSubmit}
             variant="contained"
             color="primary"
             size="large"
             type="submit"
-            fullWidth
           >
-            Submit
+            Create
           </Button>
+
           <Button
             variant="contained"
             color="secondary"
-            size="small"
+            size="large"
             onClick={clear}
-            fullWidth
           >
-            Clear
+            Cancel
           </Button>
         </form>
       </Paper>
