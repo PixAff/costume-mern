@@ -13,11 +13,14 @@ export const createRole = async (req, res) => {
     notes,
     script,
   });
+
+  console.log(newRole);
   try {
     await newRole.save();
 
     res.status(201).json(newRole);
   } catch (error) {
+    console.log(error);
     res.status(409).json({ message: error.message });
   }
 };

@@ -1,25 +1,25 @@
 import { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Modal from "@material-ui/core/Modal";
-import { Button, ButtonGroup, Tooltip } from "@material-ui/core";
+import { Button, Tooltip } from "@material-ui/core";
 import Edit from "@material-ui/icons/Edit";
 import TransferList from "./TransferList";
 import RoleForm from "../role/RoleForm";
 
-function rand() {
-  return Math.round(Math.random() * 20) - 10;
-}
+// function rand() {
+//   return Math.round(Math.random() * 20) - 10;
+// }
 
-function getModalStyle() {
-  const top = 50 + rand();
-  const left = 50 + rand();
+// function getModalStyle() {
+//   const top = 50 + rand();
+//   const left = 50 + rand();
 
-  return {
-    top: `${top}%`,
-    left: `${left}%`,
-    transform: `translate(-${top}%, -${left}%)`,
-  };
-}
+//   return {
+//     top: `${top}%`,
+//     left: `${left}%`,
+//     transform: `translate(-${top}%, -${left}%)`,
+//   };
+// }
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -29,6 +29,8 @@ const useStyles = makeStyles((theme) => ({
     border: "2px solid #000",
     boxShadow: theme.shadows[5],
     padding: theme.spacing(2, 4, 3),
+    left: 100,
+    top: 20,
   },
   addButton: {
     backgroundColor: "green",
@@ -38,10 +40,10 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function RolesModal({ scene }) {
+export default function RolesModal({ scene, allRoles }) {
   const classes = useStyles();
   // getModalStyle is not a pure function, we roll the style only on the first render
-  const [modalStyle] = useState(getModalStyle);
+  // const [modalStyle] = useState(getModalStyle);
   const [open, setOpen] = useState(false);
 
   const handleOpen = () => {
@@ -52,15 +54,15 @@ export default function RolesModal({ scene }) {
     setOpen(false);
   };
 
-  const handleUpdate = () => {
-    console.log("UPDATE");
-  };
-
+  // const handleUpdate = () => {
+  //   console.log("UPDATE");
+  // };
+  // style={modalStyle}
   const body = (
-    <div style={modalStyle} className={classes.paper}>
+    <div className={`${classes.paper} `}>
       <h2 id="simple-modal-title">Scene Nr: {scene.sceneNumber}</h2>
-      <TransferList />
-      <ButtonGroup disableElevation variant="contained" color="primary">
+      <TransferList allRoles={allRoles} scene={scene} setOpen={setOpen} />
+      {/* <ButtonGroup disableElevation variant="contained" color="primary">
         <Button onClick={handleUpdate}>APPLY</Button>
         <Button className={classes.addButton} onClick={handleUpdate}>
           ADD
@@ -68,7 +70,7 @@ export default function RolesModal({ scene }) {
         <Button onClick={handleClose} color="secondary">
           CANCEL
         </Button>
-      </ButtonGroup>
+      </ButtonGroup> */}
       <RoleForm scene={scene} />
     </div>
   );

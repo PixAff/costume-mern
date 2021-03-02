@@ -22,8 +22,8 @@ import ViewColumn from "@material-ui/icons/ViewColumn";
 // import Alert from "@material-ui/lab/Alert";
 import { useDispatch, useSelector } from "react-redux";
 import { createScene, deleteScene, updateScene } from "../../actions/scenes";
-import { Button, Fab } from "@material-ui/core";
-import RolesModal from "./RolesModal";
+import { Button } from "@material-ui/core";
+import RolesModal from "../role/RolesModal";
 
 const tableIcons = {
   Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
@@ -53,10 +53,56 @@ function MaterialTables({ script }) {
   const dispatch = useDispatch();
   const [scenes, setScenes] = useState([]);
   const [allRoles, setAllRoles] = useState([]);
-  console.log(allRoles);
+  const fetchedScenes = useSelector((state) => state.scenes);
+  const fetchedRoles = useSelector((state) => state.roles);
+  const scriptId = script._id;
+
+  // const fetchedData = fetchedScenes.map((scene) =>
+  //   createData(
+  //     scene.sceneNumber,
+  //     scene.playDay,
+  //     scene.mood,
+  //     scene._id,
+  //     scene.place,
+  //     scene.description,
+  //     scene.roles
+  //   )
+  // );
+
+  // function createData(
+  //   sceneNumber,
+  //   playDay,
+  //   mood,
+  //   id,
+  //   place,
+  //   description,
+  //   roles
+  // ) {
+  //   return {
+  //     sceneNumber,
+  //     playDay,
+  //     mood,
+  //     id,
+  //     description:
+  //       description || "some more or less useful content showing up here",
+  //     roles,
+  //     place: place || "nice Place",
+  //     scriptId,
+  //   };
+  // }
+
+  useEffect(() => {
+    setScenes(fetchedScenes);
+    setAllRoles(fetchedRoles);
+    console.log("fetch");
+  }, [fetchedScenes, fetchedRoles]);
+
+  // function handleSceneRoles(scene, sceneRoles) {
+  //   console.log(scene, sceneRoles);
+  // }
 
   const columns = [
-    { title: "id", field: "id", hidden: true },
+    { title: "id", field: "_id", hidden: true },
     {
       title: "NR",
       field: "sceneNumber",
@@ -109,15 +155,20 @@ function MaterialTables({ script }) {
             }}
           >
             <Grid item xs={1}>
-              <RolesModal key={rowData.tableData.id} scene={rowData} />
+              <RolesModal
+                key={rowData.tableData.id}
+                scene={rowData}
+                allRoles={allRoles}
+              />
             </Grid>
             <Grid item xs={11}>
               <div>
-                {rowData.roles.map((role) => (
-                  <Button key={role.name} color="inherit">
-                    {role.name}
-                  </Button>
-                ))}
+                {rowData.roles &&
+                  rowData.roles.map((role) => (
+                    <Button key={role.name} color="inherit">
+                      {role.name}
+                    </Button>
+                  ))}
               </div>
             </Grid>
           </Grid>
@@ -148,53 +199,9 @@ function MaterialTables({ script }) {
   //for error handling
   //   const [iserror, setIserror] = useState(false);
   //   const [errorMessages, setErrorMessages] = useState([]);
-  const fetchedScenes = useSelector((state) => state.scenes);
-  const fetchedRoles = useSelector((state) => state.roles);
-  const scriptId = script._id;
-
-  const fetchedData = fetchedScenes.map((scene) =>
-    createData(
-      scene.sceneNumber,
-      scene.playDay,
-      scene.mood,
-      scene._id,
-      scene.place,
-      scene.description,
-      fetchedRoles
-    )
-  );
-
-  useEffect(() => {
-    setScenes(fetchedData);
-    setAllRoles(fetchedRoles);
-    console.log("fetch");
-  }, [fetchedScenes, fetchedRoles]);
-
-  function createData(
-    sceneNumber,
-    playDay,
-    mood,
-    id,
-    place,
-    description,
-    roles
-  ) {
-    return {
-      sceneNumber,
-      playDay,
-      mood,
-      id,
-      description:
-        description || "some more or less useful content showing up here",
-      roles,
-      place: place || "nice Place",
-      scriptId,
-    };
-  }
 
   const handleRowUpdate = (newData, oldData, resolve) => {
-    console.log(newData, oldData);
-    console.log("TODO: parseInt from Material Table in the first place");
+    // console.log("TODO: parseInt from Material Table in the first place");
     newData.sceneNumber = parseInt(newData.sceneNumber);
     newData.playDay = parseInt(newData.playDay);
     dispatch(updateScene(newData));

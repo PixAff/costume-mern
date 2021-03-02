@@ -14,7 +14,6 @@ export const clearRoles = () => async (dispatch) => {
 };
 
 export const getRoles = (scriptId) => async (dispatch) => {
-  console.log("dispatch roles");
   const { data } = await axios.get(`/roles/${scriptId}`);
   dispatch({ type: FETCH_ROLES, payload: data });
 };
@@ -25,7 +24,6 @@ export const getRoles = (scriptId) => async (dispatch) => {
 // };
 
 export const createRole = (role) => async (dispatch) => {
-  console.log(role);
   const { data } = await axios.post(`/roles/${role.script}`, role);
   dispatch({ type: CREATE_ROLE, payload: data });
 };

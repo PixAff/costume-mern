@@ -29,7 +29,8 @@ export const getScenes = async (req, res) => {
       script: req.params.scriptid,
     })
       // .sort({ sceneNumber: "asc" })
-      .populate("script");
+      .populate("script")
+      .populate("roles");
     console.log(scenes.map((scene) => scene));
     res.status(200).json(scenes);
   } catch (error) {
@@ -50,10 +51,10 @@ export const getScenes = async (req, res) => {
 // };
 
 export const updateScene = async (req, res) => {
-  const { id, sceneNumber, playDay, mood, place, description } = req.body;
+  const { _id, sceneNumber, playDay, mood, place, description } = req.body;
   console.log("TODO: refactor body to hole scene (scene: {...}");
-  if (!mongoose.Types.ObjectId.isValid(id))
-    return res.status(404).send(`No scene with id: ${id}`);
+  if (!mongoose.Types.ObjectId.isValid(_id))
+    return res.status(404).send(`No scene with id: ${_id}`);
 
   const updatedScene = {
     sceneNumber,
@@ -61,10 +62,10 @@ export const updateScene = async (req, res) => {
     mood,
     place,
     description,
-    _id: id,
+    _id,
   };
 
-  await Scene.findByIdAndUpdate(id, updatedScene, { new: true });
+  await Scene.findByIdAndUpdate(_id, updatedScene, { new: true });
 
   res.status(200).json(updatedScene);
 };
@@ -80,18 +81,11 @@ export const deleteScene = async (req, res) => {
   res.json({ message: `${req.params.id} removed`, id: req.params.id });
 };
 
-// export const likeScript = async (req, res) => {
-//   const { id } = req.params;
-//   const script = await Script.findById(id);
-//   const updatedScript = await Script.findByIdAndUpdate(
-//     id,
-//     {
-//       liked: script.liked + 1,
-//     },
-//     {
-//       new: true, // return the updated script
-//       runValidators: true,
-//     }
-//   );
-//   res.json(updatedScript);
-// };
+export const addRolesToScene = async (req, res) => {
+  // roles gets deleted and reset every time -> this fn solves all crud actions
+  const id = req.body.scene._id;
+  const updatedScene = req.body.scene;
+  updatedScene.roles = req.body.roles;
+  await Scene.findByIdAndUpdate(id, updatedScene, { new: true });
+  res.status(200).json(updatedScene);
+};

@@ -2,10 +2,10 @@ import axios from "axios";
 import {
   CREATE_SCENE,
   DELETE_SCENE,
-  FETCH_SCENE,
   FETCH_SCENES,
   CLEAR_SCENES,
   UPDATE_SCENE,
+  ADD_ROLES_TO_SCENE,
 } from "../constants/actionTypes";
 
 export const clearScenes = () => async (dispatch) => {
@@ -28,7 +28,7 @@ export const createScene = (scene, scriptId) => async (dispatch) => {
 };
 
 export const updateScene = (scene) => async (dispatch) => {
-  const { data } = await axios.patch(`/scene/${scene.id}`, scene);
+  const { data } = await axios.patch(`/scene/${scene._id}`, scene);
   dispatch({ type: UPDATE_SCENE, payload: data });
 };
 
@@ -36,6 +36,14 @@ export const deleteScene = (scriptId, id) => async (dispatch) => {
   const { data } = await axios.delete(`/script/${scriptId}/scene/${id}`);
   dispatch({ type: DELETE_SCENE, payload: data.id });
   // return data.id;
+};
+
+export const addRolesToScene = (scene, roles) => async (dispatch) => {
+  const { data } = await axios.patch(`/roles/scene/${scene._id}`, {
+    roles,
+    scene,
+  });
+  dispatch({ type: ADD_ROLES_TO_SCENE, payload: data });
 };
 
 // export const likeScript = (id) => async (dispatch) => {

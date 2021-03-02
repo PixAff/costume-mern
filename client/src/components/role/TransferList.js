@@ -7,7 +7,9 @@ import ListItemText from "@material-ui/core/ListItemText";
 import Checkbox from "@material-ui/core/Checkbox";
 import Button from "@material-ui/core/Button";
 import Paper from "@material-ui/core/Paper";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import { addRolesToScene } from "../../actions/scenes";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -31,11 +33,27 @@ function intersection(a, b) {
   return a.filter((value) => b.indexOf(value) !== -1);
 }
 
-export default function TransferList() {
+export default function TransferList({ allRoles, scene, setOpen }) {
   const classes = useStyles();
+  const dispatch = useDispatch();
   const [checked, setChecked] = useState([]);
-  const [left, setLeft] = useState([0, 1, 2, 3]);
-  const [right, setRight] = useState([4, 5, 6, 7]);
+  const [right, setRight] = useState([]);
+  const [left, setLeft] = useState([]);
+  let cleanedLeft = allRoles.filter(
+    (a) => !scene.roles.map((b) => b._id).includes(a._id)
+  );
+
+  useEffect(() => {
+    if (!scene.roles.length) {
+      setRight([]);
+    } else {
+      setRight(scene.roles);
+    }
+    setLeft(cleanedLeft);
+  }, [scene]);
+
+  // const [left, setLeft] = useState(cleanedLeft);
+  // let cleanedLeft = allRoles.filter((x) => !right.includes(x));
 
   const leftChecked = intersection(checked, left);
   const rightChecked = intersection(checked, right);
@@ -53,10 +71,10 @@ export default function TransferList() {
     setChecked(newChecked);
   };
 
-  const handleAllRight = () => {
-    setRight(right.concat(left));
-    setLeft([]);
-  };
+  // const handleAllRight = () => {
+  //   setRight(right.concat(left));
+  //   setLeft([]);
+  // };
 
   const handleCheckedRight = () => {
     setRight(right.concat(leftChecked));
@@ -70,21 +88,26 @@ export default function TransferList() {
     setChecked(not(checked, rightChecked));
   };
 
-  const handleAllLeft = () => {
-    setLeft(left.concat(right));
-    setRight([]);
+  const handleUpdate = () => {
+    dispatch(addRolesToScene(scene, right));
+    setOpen(false);
   };
+
+  // const handleAllLeft = () => {
+  //   setLeft(left.concat(right));
+  //   setRight([]);
+  // };
 
   const customList = (items, name) => (
     <Paper className={classes.paper}>
       {name}
       <List dense component="div" role="list">
         {items.map((value) => {
-          const labelId = `transfer-list-item-${value}-label`;
+          const labelId = `transfer-list-item-${value.name}-label`;
 
           return (
             <ListItem
-              key={value}
+              key={value._id}
               role="listitem"
               button
               onClick={handleToggle(value)}
@@ -97,7 +120,7 @@ export default function TransferList() {
                   inputProps={{ "aria-labelledby": labelId }}
                 />
               </ListItemIcon>
-              <ListItemText id={labelId} primary={`List item ${value + 1}`} />
+              <ListItemText id={labelId} primary={value.name} />
             </ListItem>
           );
         })}
@@ -117,7 +140,7 @@ export default function TransferList() {
       <Grid item>{customList(left, "all Roles")}</Grid>
       <Grid item>
         <Grid container direction="column" alignItems="center">
-          <Button
+          {/* <Button
             variant="outlined"
             size="small"
             className={classes.button}
@@ -126,7 +149,7 @@ export default function TransferList() {
             aria-label="move all right"
           >
             ≫
-          </Button>
+          </Button> */}
           <Button
             variant="outlined"
             size="small"
@@ -147,7 +170,7 @@ export default function TransferList() {
           >
             &lt;
           </Button>
-          <Button
+          {/* <Button
             variant="outlined"
             size="small"
             className={classes.button}
@@ -156,6 +179,16 @@ export default function TransferList() {
             aria-label="move all left"
           >
             ≪
+          </Button> */}
+          <Button variant="contained" color="primary" onClick={handleUpdate}>
+            APPLY
+          </Button>
+          <Button
+            variant="contained"
+            onClick={() => setOpen(false)}
+            color="secondary"
+          >
+            CANCEL
           </Button>
         </Grid>
       </Grid>

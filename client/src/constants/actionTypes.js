@@ -11,6 +11,7 @@ export const DELETE_SCENE = "DELETE_SCENE";
 export const FETCH_SCENE = "FETCH_SCENE";
 export const FETCH_SCENES = "FETCH_SCENES";
 export const CLEAR_SCENES = "CLEAR_SCENES";
+export const ADD_ROLES_TO_SCENE = "ADD_ROLES_TO_SCENE";
 
 export const CREATE_ROLE = "CREATE_ROLE";
 export const UPDATE_ROLE = "UPDATE_ROLE";

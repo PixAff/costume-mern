@@ -32,6 +32,12 @@ const sceneSchema = mongoose.Schema({
     ref: "Script",
     required: "You must supply a script!",
   },
+  roles: [
+    {
+      type: mongoose.Schema.ObjectId,
+      ref: "Role",
+    },
+  ],
 });
 
 const Scene = mongoose.model("Scene", sceneSchema);

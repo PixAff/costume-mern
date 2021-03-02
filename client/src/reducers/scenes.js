@@ -5,6 +5,7 @@ import {
   FETCH_SCENE,
   FETCH_SCENES,
   UPDATE_SCENE,
+  ADD_ROLES_TO_SCENE,
 } from "../constants/actionTypes";
 
 export default function scenes(scenes = [], action) {
@@ -15,6 +16,7 @@ export default function scenes(scenes = [], action) {
     case CREATE_SCENE:
       return [...scenes, action.payload];
     case UPDATE_SCENE:
+    case ADD_ROLES_TO_SCENE:
       return scenes.map((scene) =>
         scene._id === action.payload._id ? action.payload : scene
       );

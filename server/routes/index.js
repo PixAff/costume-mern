@@ -16,6 +16,7 @@ import {
   getScenes,
   deleteScene,
   updateScene,
+  addRolesToScene,
 } from "../controllers/sceneController.js";
 
 import { createRole, getRoles } from "../controllers/roleController.js";
@@ -34,6 +35,7 @@ router.get("/scenes/:scriptid", getScenes);
 router.post("/scenes/:scriptid", createScene);
 router.delete("/script/:id/scene/:id", deleteScene);
 router.patch("/scene/:id", updateScene);
+router.patch("/roles/scene/:sceneid", addRolesToScene);
 
 // ROLE
 router.get("/roles/:scriptid", getRoles);

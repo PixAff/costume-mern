@@ -1,0 +1,3 @@
+- Add roles in scope of uniqueness 
+- refetch roles in transferlist after creating new role
+- sometimes scriptnumber gets lost when creating a role in Modal

@@ -53,7 +53,6 @@ const columns = [
 
 export default function ScenesTable() {
   const scenes = useSelector((state) => state.scenes);
-  console.log(scenes);
 
   const rows = scenes.map((scene) => ({
     id: scene._id,
@@ -61,8 +60,6 @@ export default function ScenesTable() {
     playDay: scene.playDay,
     mood: scene.mood,
   }));
-
-  console.log(rows);
 
   return (
     <div style={{ height: 600, width: "100%", background: "white" }}>

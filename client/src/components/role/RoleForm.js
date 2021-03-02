@@ -1,17 +1,16 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Button, Paper, TextField, Typography } from "@material-ui/core";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 
 import useStyles from "../styles";
 import { createRole } from "../../actions/roles";
 
 const RoleForm = ({ scene }) => {
-  console.log("Roles Form: ", scene.scriptId);
   const [roleData, setRoleData] = useState({
     name: "",
     actor: "",
     notes: "",
-    script: scene.scriptId,
+    script: scene.script._id,
   });
 
   const dispatch = useDispatch();
@@ -23,7 +22,7 @@ const RoleForm = ({ scene }) => {
 
   const clear = () => {
     // setCurrentId(0);
-    setRoleData({ name: "", actor: "", notes: "", script: scene.scriptId });
+    setRoleData({ name: "", actor: "", notes: "", script: scene.script._id });
   };
 
   const handleSubmit = (e) => {
