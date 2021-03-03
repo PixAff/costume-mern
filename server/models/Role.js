@@ -6,12 +6,11 @@ const roleSchema = mongoose.Schema({
     type: String,
     trim: true,
     required: "Please enter a name!",
-    unique: false,
   },
   actor: {
     type: String,
     trim: true,
-    unique: false,
+    default: "unknown",
   },
   notes: {
     type: String,

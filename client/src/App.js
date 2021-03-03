@@ -4,11 +4,13 @@ import Nav from "./components/main/Nav";
 import SingleScript from "./components/script/SingleScript";
 import HomePage from "./components/main/Homepage";
 import ScriptsPage from "./components/main/ScriptsPage";
+import ErrorNotification from "./components/main/ErrorNotification";
 
 const App = () => {
   return (
     <>
       <Nav />
+      <ErrorNotification />
       <div>
         <Switch>
           <Route exact path="/" component={HomePage} />

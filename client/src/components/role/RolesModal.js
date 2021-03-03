@@ -6,21 +6,6 @@ import Edit from "@material-ui/icons/Edit";
 import TransferList from "./TransferList";
 import RoleForm from "../role/RoleForm";
 
-// function rand() {
-//   return Math.round(Math.random() * 20) - 10;
-// }
-
-// function getModalStyle() {
-//   const top = 50 + rand();
-//   const left = 50 + rand();
-
-//   return {
-//     top: `${top}%`,
-//     left: `${left}%`,
-//     transform: `translate(-${top}%, -${left}%)`,
-//   };
-// }
-
 const useStyles = makeStyles((theme) => ({
   paper: {
     position: "absolute",
@@ -42,8 +27,6 @@ const useStyles = makeStyles((theme) => ({
 
 export default function RolesModal({ scene, allRoles }) {
   const classes = useStyles();
-  // getModalStyle is not a pure function, we roll the style only on the first render
-  // const [modalStyle] = useState(getModalStyle);
   const [open, setOpen] = useState(false);
 
   const handleOpen = () => {
@@ -54,10 +37,6 @@ export default function RolesModal({ scene, allRoles }) {
     setOpen(false);
   };
 
-  // const handleUpdate = () => {
-  //   console.log("UPDATE");
-  // };
-  // style={modalStyle}
   const body = (
     <div className={`${classes.paper} `}>
       <h2 id="simple-modal-title">Scene Nr: {scene.sceneNumber}</h2>

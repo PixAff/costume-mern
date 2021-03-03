@@ -33,7 +33,7 @@ router.patch("/script/:id/likeScript", likeScript);
 // SCENE
 router.get("/scenes/:scriptid", getScenes);
 router.post("/scenes/:scriptid", createScene);
-router.delete("/script/:id/scene/:id", deleteScene);
+router.delete("/scene/:id", deleteScene);
 router.patch("/scene/:id", updateScene);
 router.patch("/roles/scene/:sceneid", addRolesToScene);
 

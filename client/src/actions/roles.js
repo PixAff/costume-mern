@@ -2,6 +2,7 @@ import axios from "axios";
 import {
   CLEAR_ROLES,
   CREATE_ROLE,
+  SET_ERROR,
   // DELETE_ROLE,
   // FETCH_ROLE,
   FETCH_ROLES,
@@ -24,8 +25,13 @@ export const getRoles = (scriptId) => async (dispatch) => {
 // };
 
 export const createRole = (role) => async (dispatch) => {
-  const { data } = await axios.post(`/roles/${role.script}`, role);
-  dispatch({ type: CREATE_ROLE, payload: data });
+  try {
+    const { data } = await axios.post(`/roles/${role.script}`, role);
+    console.log(data);
+    return dispatch({ type: CREATE_ROLE, payload: data });
+  } catch (error) {
+    return dispatch({ type: SET_ERROR, payload: error.response.data });
+  }
 };
 
 // export const updateScene = (scene) => async (dispatch) => {

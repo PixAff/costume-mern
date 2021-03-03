@@ -57,49 +57,11 @@ function MaterialTables({ script }) {
   const fetchedRoles = useSelector((state) => state.roles);
   const scriptId = script._id;
 
-  // const fetchedData = fetchedScenes.map((scene) =>
-  //   createData(
-  //     scene.sceneNumber,
-  //     scene.playDay,
-  //     scene.mood,
-  //     scene._id,
-  //     scene.place,
-  //     scene.description,
-  //     scene.roles
-  //   )
-  // );
-
-  // function createData(
-  //   sceneNumber,
-  //   playDay,
-  //   mood,
-  //   id,
-  //   place,
-  //   description,
-  //   roles
-  // ) {
-  //   return {
-  //     sceneNumber,
-  //     playDay,
-  //     mood,
-  //     id,
-  //     description:
-  //       description || "some more or less useful content showing up here",
-  //     roles,
-  //     place: place || "nice Place",
-  //     scriptId,
-  //   };
-  // }
-
   useEffect(() => {
     setScenes(fetchedScenes);
     setAllRoles(fetchedRoles);
     console.log("fetch");
   }, [fetchedScenes, fetchedRoles]);
-
-  // function handleSceneRoles(scene, sceneRoles) {
-  //   console.log(scene, sceneRoles);
-  // }
 
   const columns = [
     { title: "id", field: "_id", hidden: true },
@@ -165,7 +127,7 @@ function MaterialTables({ script }) {
               <div>
                 {rowData.roles &&
                   rowData.roles.map((role) => (
-                    <Button key={role.name} color="inherit">
+                    <Button key={role._id} color="inherit">
                       {role.name}
                     </Button>
                   ))}
@@ -298,7 +260,7 @@ function MaterialTables({ script }) {
   //   };
 
   function handleRowDelete(oldData, resolve) {
-    dispatch(deleteScene(scriptId, oldData.id));
+    dispatch(deleteScene(oldData._id));
     console.log(
       "TODO: sometimes a pagination error appears when the last item of a page gets deleted"
     );

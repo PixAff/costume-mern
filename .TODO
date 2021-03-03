@@ -1,3 +1,6 @@
 - Add roles in scope of uniqueness 
 - refetch roles in transferlist after creating new role
-- sometimes scriptnumber gets lost when creating a role in Modal
+- sometimes scriptnumber gets lost when creating a role in Modal 
+    - precise: the population of script does not work - scene gets passed only with script as id
+    - reason: script gets only populated when fetching all scenes!
+

@@ -4,6 +4,7 @@ import Scene from "../models/Scene.js";
 import Role from "../models/Role.js";
 
 export const createRole = async (req, res) => {
+  console.log(req.body);
   const { name, actor, notes } = req.body;
   const script = req.params.scriptid;
 
@@ -17,11 +18,21 @@ export const createRole = async (req, res) => {
   console.log(newRole);
   try {
     await newRole.save();
-
     res.status(201).json(newRole);
   } catch (error) {
-    console.log(error);
-    res.status(409).json({ message: error.message });
+    let errorsMsg = [];
+    if (error.errors) {
+      console.log("1", error, error.errors);
+      Object.entries(error.errors).forEach(([key, value]) =>
+        errorsMsg.push({
+          path: value.properties.path,
+          msg: value.properties.message,
+        })
+      );
+    } else {
+      errorsMsg.push({ path: "MongoError", msg: error.code });
+    }
+    res.status(422).json({ message: errorsMsg });
   }
 };
 
@@ -31,7 +42,7 @@ export const getRoles = async (req, res) => {
       script: req.params.scriptid,
     });
     // .populate("script");
-    console.log(roles.map((role) => role));
+    // console.log(roles.map((role) => role));
     res.status(200).json(roles);
   } catch (error) {
     res.status(404).json({ message: error.message });

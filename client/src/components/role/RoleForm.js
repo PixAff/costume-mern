@@ -1,16 +1,22 @@
 import { useState } from "react";
 import { Button, Paper, TextField, Typography } from "@material-ui/core";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import useStyles from "../styles";
 import { createRole } from "../../actions/roles";
+import { SET_ERROR } from "../../constants/actionTypes";
 
 const RoleForm = ({ scene }) => {
+  // TODO: Sometimes the script is not beeing populated with scene (workaround:
+  // conditional setting of script)
+  console.log("RoleForm", scene.script);
+  const error = useSelector((state) => state.errors);
+
   const [roleData, setRoleData] = useState({
     name: "",
     actor: "",
     notes: "",
-    script: scene.script._id,
+    script: scene.script._id || scene.script,
   });
 
   const dispatch = useDispatch();
@@ -22,13 +28,21 @@ const RoleForm = ({ scene }) => {
 
   const clear = () => {
     // setCurrentId(0);
-    setRoleData({ name: "", actor: "", notes: "", script: scene.script._id });
+    setRoleData({
+      name: "",
+      actor: "",
+      notes: "",
+      script: scene.script._id || scene.script,
+    });
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(createRole(roleData));
-    clear();
+    dispatch(createRole(roleData)).then((res) => {
+      if (res.type !== SET_ERROR) {
+        clear();
+      }
+    });
   };
 
   return (

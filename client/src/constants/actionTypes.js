@@ -19,3 +19,6 @@ export const DELETE_ROLE = "DELETE_ROLE";
 export const FETCH_ROLE = "FETCH_ROLE";
 export const FETCH_ROLES = "FETCH_ROLES";
 export const CLEAR_ROLES = "CLEAR_ROLES";
+
+export const SET_ERROR = "SET_ERROR";
+export const HIDE_ERROR = "HIDE_ERROR";

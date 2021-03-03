@@ -8,7 +8,7 @@ import Checkbox from "@material-ui/core/Checkbox";
 import Button from "@material-ui/core/Button";
 import Paper from "@material-ui/core/Paper";
 import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addRolesToScene } from "../../actions/scenes";
 
 const useStyles = makeStyles((theme) => ({
@@ -39,7 +39,8 @@ export default function TransferList({ allRoles, scene, setOpen }) {
   const [checked, setChecked] = useState([]);
   const [right, setRight] = useState([]);
   const [left, setLeft] = useState([]);
-  let cleanedLeft = allRoles.filter(
+  const alleRollen = useSelector((state) => state.roles);
+  let cleanedLeft = alleRollen.filter(
     (a) => !scene.roles.map((b) => b._id).includes(a._id)
   );
 
@@ -50,10 +51,7 @@ export default function TransferList({ allRoles, scene, setOpen }) {
       setRight(scene.roles);
     }
     setLeft(cleanedLeft);
-  }, [scene]);
-
-  // const [left, setLeft] = useState(cleanedLeft);
-  // let cleanedLeft = allRoles.filter((x) => !right.includes(x));
+  }, [scene, alleRollen]);
 
   const leftChecked = intersection(checked, left);
   const rightChecked = intersection(checked, right);
@@ -103,7 +101,7 @@ export default function TransferList({ allRoles, scene, setOpen }) {
       {name}
       <List dense component="div" role="list">
         {items.map((value) => {
-          const labelId = `transfer-list-item-${value.name}-label`;
+          const labelId = `transfer-list-item-${value._id}-label`;
 
           return (
             <ListItem
@@ -120,7 +118,7 @@ export default function TransferList({ allRoles, scene, setOpen }) {
                   inputProps={{ "aria-labelledby": labelId }}
                 />
               </ListItemIcon>
-              <ListItemText id={labelId} primary={value.name} />
+              <ListItemText key={value._id} id={labelId} primary={value.name} />
             </ListItem>
           );
         })}

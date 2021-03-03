@@ -31,7 +31,7 @@ export const getScenes = async (req, res) => {
       // .sort({ sceneNumber: "asc" })
       .populate("script")
       .populate("roles");
-    console.log(scenes.map((scene) => scene));
+    // console.log(scenes.map((scene) => scene));
     res.status(200).json(scenes);
   } catch (error) {
     res.status(404).json({ message: error.message });

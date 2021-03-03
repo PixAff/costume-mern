@@ -32,8 +32,8 @@ export const updateScene = (scene) => async (dispatch) => {
   dispatch({ type: UPDATE_SCENE, payload: data });
 };
 
-export const deleteScene = (scriptId, id) => async (dispatch) => {
-  const { data } = await axios.delete(`/script/${scriptId}/scene/${id}`);
+export const deleteScene = (id) => async (dispatch) => {
+  const { data } = await axios.delete(`/scene/${id}`);
   dispatch({ type: DELETE_SCENE, payload: data.id });
   // return data.id;
 };
