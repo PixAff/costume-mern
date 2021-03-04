@@ -305,6 +305,8 @@ function MaterialTables({ script }) {
             icons={tableIcons}
             options={{
               sorting: true,
+              exportButton: true,
+              exportAllData: true,
             }}
             editable={{
               onRowUpdate: (newData, oldData) =>

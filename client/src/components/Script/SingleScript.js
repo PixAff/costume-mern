@@ -30,5 +30,9 @@ export default function SingleScript() {
   //   window.location.pathname.lastIndexOf("/") + 1
   // );
 
-  return <Box mx={2}>{script && <MaterialTables script={script} />}</Box>;
+  return (
+    <div>
+      <Box mx={2}>{script && <MaterialTables script={script} />}</Box>
+    </div>
+  );
 }

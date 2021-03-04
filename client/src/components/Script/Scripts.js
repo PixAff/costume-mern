@@ -1,8 +1,9 @@
-import { CircularProgress, Grid } from "@material-ui/core";
+import { Box, CircularProgress, Grid } from "@material-ui/core";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { clearRoles } from "../../actions/roles";
 import { clearScenes } from "../../actions/scenes";
+import TheButton from "../pdf/PdfTest";
 import useStyles from "../styles";
 
 import ScriptCard from "./ScriptCard";
@@ -32,6 +33,9 @@ export default function Scripts({ setCurrentId }) {
           <ScriptCard script={script} setCurrentId={setCurrentId} />
         </Grid>
       ))}
+      <Box mx={2}>
+        <TheButton script={scripts} />
+      </Box>
     </Grid>
   );
 }
