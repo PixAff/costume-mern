@@ -3,7 +3,7 @@ import Script from "../models/Script.js";
 import Scene from "../models/Scene.js";
 
 export const createScene = async (req, res) => {
-  const { sceneNumber, playDay, mood, place, description } = req.body;
+  const { sceneNumber, playDay, mood, place, description, notes } = req.body;
   const script = req.params.scriptid;
 
   const newScene = new Scene({
@@ -13,6 +13,7 @@ export const createScene = async (req, res) => {
     script,
     place,
     description,
+    notes,
   });
   try {
     await newScene.save();
@@ -51,7 +52,15 @@ export const getScenes = async (req, res) => {
 // };
 
 export const updateScene = async (req, res) => {
-  const { _id, sceneNumber, playDay, mood, place, description } = req.body;
+  const {
+    _id,
+    sceneNumber,
+    playDay,
+    mood,
+    place,
+    description,
+    notes,
+  } = req.body;
   console.log("TODO: refactor body to hole scene (scene: {...}");
   if (!mongoose.Types.ObjectId.isValid(_id))
     return res.status(404).send(`No scene with id: ${_id}`);
@@ -62,6 +71,7 @@ export const updateScene = async (req, res) => {
     mood,
     place,
     description,
+    notes,
     _id,
   };
 

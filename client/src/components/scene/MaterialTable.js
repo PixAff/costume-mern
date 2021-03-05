@@ -69,7 +69,6 @@ function MaterialTables({ script }) {
       title: "NR",
       field: "sceneNumber",
       defaultSort: "asc",
-      initialEditValue: "0",
       validate: (rowData) =>
         /\D/.test(rowData.sceneNumber) || rowData.sceneNumber.length < 1
           ? { isValid: false, helperText: "Please enter a number!" }
@@ -78,7 +77,14 @@ function MaterialTables({ script }) {
     {
       title: "Day",
       field: "playDay",
-      initialEditValue: "0",
+      cellStyle: {
+        maxWidth: 20,
+        width: 20,
+      },
+      headerStyle: {
+        maxWidth: 20,
+        width: 20,
+      },
       validate: (rowData) =>
         /\D/.test(rowData.playDay) || rowData.playDay.length < 1
           ? { isValid: false, helperText: "Please enter a number!" }
@@ -97,8 +103,28 @@ function MaterialTables({ script }) {
       },
     },
     { title: "Place", field: "place", sorting: false },
-    { title: "Content", field: "description", sorting: false },
-    { title: "notes", field: "notes", sorting: false },
+    {
+      title: "Content",
+      field: "description",
+      sorting: false,
+      cellStyle: {
+        minWidth: 400,
+      },
+      headerStyle: {
+        minWidth: 400,
+      },
+    },
+    {
+      title: "notes",
+      field: "notes",
+      sorting: false,
+      cellStyle: {
+        minWidth: 300,
+      },
+      headerStyle: {
+        minWidth: 300,
+      },
+    },
   ];
 
   const detailPanel = [
@@ -113,7 +139,7 @@ function MaterialTables({ script }) {
               fontSize: 16,
               textAlign: "center",
               color: "white",
-              backgroundColor: "#43A047",
+              backgroundColor: "#AAAAAA",
             }}
           >
             <Grid item xs={1}>
@@ -305,8 +331,7 @@ function MaterialTables({ script }) {
             icons={tableIcons}
             options={{
               sorting: true,
-              exportButton: true,
-              exportAllData: true,
+              paging: false,
             }}
             editable={{
               onRowUpdate: (newData, oldData) =>

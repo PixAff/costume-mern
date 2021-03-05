@@ -2,14 +2,12 @@ import { Text, View, StyleSheet } from "@react-pdf/renderer";
 
 const styles = StyleSheet.create({
   container: {
-    height: "10mm",
     flexDirection: "row",
     borderBottomWidth: 1,
     borderBottomColor: "grey",
     borderBottomStyle: "solid",
     alignItems: "center",
     fontSize: 10,
-    backgroundColor: "#f0f0f0",
   },
   scene: {
     paddingHorizontal: 4,
@@ -17,13 +15,11 @@ const styles = StyleSheet.create({
     width: "12mm",
     backgroundColor: "red",
     textAlign: "center",
-
     // borderColor: "#3f51b5",
     // borderRightWidth: 2,
   },
   day: {
     paddingHorizontal: 4,
-    backgroundColor: "green",
     width: "12mm",
     textAlign: "center",
 
@@ -33,7 +29,6 @@ const styles = StyleSheet.create({
   mood: {
     width: "20mm",
     paddingHorizontal: 4,
-    backgroundColor: "grey",
     textAlign: "center",
   },
   place: {
@@ -47,31 +42,35 @@ const styles = StyleSheet.create({
   notes: {
     width: "100mm",
     paddingHorizontal: 4,
-    backgroundColor: "grey",
   },
 });
 
-export default function TableHeader() {
+export default function ScenesTable({ data }) {
+  console.log(data);
   return (
-    <View style={styles.container}>
-      <View>
-        <Text style={styles.scene}>Scn</Text>
-      </View>
-      <View>
-        <Text style={styles.day}>Day</Text>
-      </View>
-      <View>
-        <Text style={styles.mood}>Mood</Text>
-      </View>
-      <View>
-        <Text style={styles.place}>Motif</Text>
-      </View>
-      <View>
-        <Text style={styles.content}>Content</Text>
-      </View>
-      <View>
-        <Text style={styles.notes}>Notes</Text>
-      </View>
-    </View>
+    <>
+      {data.map((scene) => (
+        <View key={scene._id} style={styles.container}>
+          <View>
+            <Text style={styles.scene}>{scene.sceneNumber}</Text>
+          </View>
+          <View>
+            <Text style={styles.day}>{scene.playDay}</Text>
+          </View>
+          <View>
+            <Text style={styles.mood}>{scene.mood}</Text>
+          </View>
+          <View>
+            <Text style={styles.place}>{scene.place}</Text>
+          </View>
+          <View>
+            <Text style={styles.content}>{scene.description}</Text>
+          </View>
+          <View>
+            <Text style={styles.notes}>{scene.notes}</Text>
+          </View>
+        </View>
+      ))}
+    </>
   );
 }

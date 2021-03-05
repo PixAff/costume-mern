@@ -13,6 +13,7 @@ import {
 // import Experience from "./Experience";
 // import Skills from "./Skills";
 import PageHeader from "./PageHeader";
+import ScenesTable from "./ScenesTable";
 import TableHeader from "./TableHeader";
 
 const styles = StyleSheet.create({
@@ -59,6 +60,7 @@ const Scenes = (props) => (
   <Page {...props}>
     <PageHeader title={title} />
     <TableHeader />
+    <ScenesTable data={props.data} />
     {/* <View style={styles.container}>
       <View>
         {props.data.map((d) => (
@@ -84,8 +86,8 @@ const Output = ({ data }) => {
     <Document
       author="Luke Skywalker"
       keywords="awesome, resume, start wars"
-      subject="The resume of Luke Skywalker"
-      title="Resume"
+      subject="Scenes"
+      title="Script"
     >
       <Scenes orientation="landscape" size="A4" data={data} />
     </Document>

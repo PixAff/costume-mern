@@ -6,6 +6,7 @@ import {
   Document,
   StyleSheet,
   PDFDownloadLink,
+  BlobProvider,
 } from "@react-pdf/renderer";
 import axios from "axios";
 import { useEffect, useState } from "react";
@@ -27,51 +28,76 @@ const styles = StyleSheet.create({
 });
 
 export default function TheButton() {
-  // const [fetching, setFetching] = useState(true);
-  // const [data, setData] = useState();
-  // const [error, setError] = useState(true);
-  const data = useSelector((state) => state.scripts);
+  const [fetching, setFetching] = useState(true);
+  const [data, setData] = useState();
+  const [error, setError] = useState(true);
+  // const data = useSelector((state) => state.scripts);
 
-  // const fetchData = () => {
-  //   setFetching(true);
+  const fetchData = () => {
+    setFetching(true);
 
-  //   axios
-  //     .get("/scripts")
-  //     .then((res) => {
-  //       setError(false);
-  //       setData(res.data);
-  //       console.log("DATA", res.data);
-  //       setFetching(false);
-  //     })
-  //     .catch((e) => {
-  //       setError(true);
-  //       setFetching(false);
-  //       console.error(e);
-  //     });
-  // };
+    axios
+      .get("/scenes/6037fb4eff96431791bf3815")
+      .then((res) => {
+        setError(false);
+        setData(res.data);
+        console.log("DATA", res.data);
+        setFetching(false);
+      })
+      .catch((e) => {
+        setError(true);
+        setFetching(false);
+        console.error(e);
+      });
+  };
   console.log(data);
 
-  return data ? (
+  return data && !error && !fetching ? (
     <Pdf data={data} />
   ) : (
-    <Button disabled variant="contained" color="inherit">
-      Fetching Data
-    </Button>
+    <div>
+      <Button variant="contained" color="inherit" onClick={fetchData}>
+        create Table
+      </Button>
+      {/* <Button disabled variant="contained" color="inherit">
+        Fetching Data
+      </Button> */}
+    </div>
   );
 }
+
+// function Pdf({ data }) {
+//   console.log("creating PDF");
+//   return (
+//     <Button variant="contained" color="inherit">
+//       <PDFDownloadLink
+//         document={<Output data={data} />}
+//         fileName="somename.pdf"
+//       >
+//         {({ blob, url, loading, error }) =>
+//           loading ? "Loading document..." : "Download"
+//         }
+//       </PDFDownloadLink>
+//     </Button>
+//   );
+// }
 
 function Pdf({ data }) {
   console.log("creating PDF");
   return (
-    <Button variant="contained" color="inherit">
-      <PDFDownloadLink
-        document={<Output data={data} />}
-        fileName="somename.pdf"
-      >
-        {({ blob, url, loading, error }) =>
-          loading ? "Loading document..." : "Download"
-        }
-      </PDFDownloadLink>
-    </Button>
+    <div>
+      <BlobProvider document={<Output data={data} />}>
+        {({ blob, url, loading, error }) => {
+          // Do whatever you need with blob here
+          return (
+            <Button variant="contained" color="inherit">
+              <a href={url} target="_blank">
+                blub
+              </a>
+            </Button>
+          );
+        }}
+      </BlobProvider>
+    </div>
   );
 }

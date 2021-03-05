@@ -14,6 +14,7 @@ export default function Scripts({ setCurrentId }) {
   const dispatch = useDispatch();
 
   useEffect(() => {
+    console.log("UE from Scripts");
     dispatch(clearScenes());
     dispatch(clearRoles());
   }, []);

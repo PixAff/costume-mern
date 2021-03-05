@@ -31,15 +31,6 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: "grey",
   },
-  // subtitle: {
-  //   fontSize: 10,
-  //   justifySelf: "flex-end",
-  // },
-  // link: {
-  //   fontSize: 10,
-  //   color: "black",
-  //   textDecoration: "none",
-  // },
 });
 
 export default function PageHeader({ title }) {
