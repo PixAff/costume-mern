@@ -1,5 +1,5 @@
 export const moods = {
-  id: "inside/day",
+  "I/D": "inside/day",
   in: "inside/night",
   im: "inside/mornig",
   ie: "inside/evening",

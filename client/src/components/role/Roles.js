@@ -15,7 +15,6 @@ import {
   IconButton,
   ListItemSecondaryAction,
 } from "@material-ui/core";
-import { DELETE_ROLE } from "../../constants/actionTypes";
 import { deleteRole } from "../../actions/roles";
 
 const useStyles = makeStyles((theme) => ({
@@ -44,7 +43,14 @@ export default function Roles() {
     <List className={classes.root}>
       {roles?.map((role) => (
         <div key={role._id}>
-          <ListItem button component={Link} to="/">
+          <ListItem
+            button
+            component={Link}
+            to={{
+              pathname: `/scripts/${roles[0].script}/role/${role._id}`,
+              state: { role },
+            }}
+          >
             <ListItemAvatar>
               <Avatar alt={role.name} src={role.img}></Avatar>
             </ListItemAvatar>

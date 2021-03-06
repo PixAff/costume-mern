@@ -23,7 +23,7 @@ import ViewColumn from "@material-ui/icons/ViewColumn";
 import { useDispatch, useSelector } from "react-redux";
 import { createScene, deleteScene, updateScene } from "../../actions/scenes";
 import { Button } from "@material-ui/core";
-import RolesModal from "../role/RolesModal";
+import RolesModal from "./RolesModal";
 import { moods } from "../../constants/general";
 
 const tableIcons = {
@@ -56,19 +56,30 @@ const tableIcons = {
   ViewColumn: forwardRef((props, ref) => <ViewColumn {...props} ref={ref} />),
 };
 
-function MaterialTables({ script }) {
-  const dispatch = useDispatch();
-  const [scenes, setScenes] = useState([]);
-  const [allRoles, setAllRoles] = useState([]);
-  const fetchedScenes = useSelector((state) => state.scenes);
-  const fetchedRoles = useSelector((state) => state.roles);
-  const scriptId = script._id;
+function RoleCardTable({ script }) {
+  // const dispatch = useDispatch();
+  // const [scenes, setScenes] = useState([
+  //   {
+  //     sceneNumber: 1,
+  //     mood: "I/M",
+  //     place: "Vorgarten von Anna",
+  //     description: "Hund bellt und Kind läuft auf Anna zu. Anna dreht sich weg",
+  //     notes: "Achtung, Hund ist 1,5m groß!",
+  //     cast: "Maria, Anna, Nachbarskind",
+  //     continuity:
+  //       "Anna hat einen Teefleck auf der Bluse, Kind hat zerrisene Hose",
+  //   },
+  // ]);
+  // const [allRoles, setAllRoles] = useState([]);
+  const scenes = useSelector((state) => state.scenes);
+  // const fetchedRoles = useSelector((state) => state.roles);
+  // const scriptId = script._id;
 
-  useEffect(() => {
-    setScenes(fetchedScenes);
-    setAllRoles(fetchedRoles);
-    console.log("fetch");
-  }, [fetchedScenes, fetchedRoles]);
+  // useEffect(() => {
+  //   setScenes(fetchedScenes);
+  //   setAllRoles(fetchedRoles);
+  //   console.log("fetch");
+  // }, [fetchedScenes, fetchedRoles]);
 
   const columns = [
     { title: "id", field: "_id", hidden: true },
@@ -76,117 +87,56 @@ function MaterialTables({ script }) {
       title: "NR",
       field: "sceneNumber",
       defaultSort: "asc",
-      validate: (rowData) =>
-        /\D/.test(rowData.sceneNumber) || rowData.sceneNumber.length < 1
-          ? { isValid: false, helperText: "Please enter a number!" }
-          : true,
-    },
-    {
-      title: "Day",
-      field: "playDay",
-      cellStyle: {
-        maxWidth: 20,
-        width: 20,
-      },
-      headerStyle: {
-        maxWidth: 20,
-        width: 20,
-      },
-      validate: (rowData) =>
-        /\D/.test(rowData.playDay) || rowData.playDay.length < 1
-          ? { isValid: false, helperText: "Please enter a number!" }
-          : true,
+      editable: "never",
     },
 
     {
       title: "Mood",
       field: "mood",
-      sorting: false,
-      lookup: moods,
+      editable: "never",
     },
-    { title: "Motif", field: "place", sorting: false },
+
+    { title: "Motif", field: "place", editable: "never" },
     {
       title: "Content",
       field: "description",
-      sorting: false,
-      cellStyle: {
-        minWidth: 400,
-      },
-      headerStyle: {
-        minWidth: 400,
-      },
+      editable: "never",
     },
     {
-      title: "notes",
+      title: "Notes",
       field: "notes",
-      sorting: false,
-      cellStyle: {
-        minWidth: 300,
-      },
-      headerStyle: {
-        minWidth: 300,
-      },
     },
-  ];
-
-  const detailPanel = [
     {
-      tooltip: "ROLES",
-      icon: tableIcons.DetailPanel,
-      render: (rowData) => {
-        return (
-          <Grid
-            container
-            style={{
-              fontSize: 16,
-              textAlign: "center",
-              color: "white",
-              backgroundColor: "#AAAAAA",
-            }}
-          >
-            <Grid item xs={1}>
-              <RolesModal
-                key={rowData.tableData.id}
-                scene={rowData}
-                allRoles={allRoles}
-              />
-            </Grid>
-            <Grid item xs={11}>
-              <div>
-                {rowData.roles &&
-                  rowData.roles.map((role) => (
-                    <Button key={role._id} color="inherit">
-                      {role.name}
-                    </Button>
-                  ))}
-              </div>
-            </Grid>
-          </Grid>
-        );
-      },
+      title: "Cast",
+      field: "cast",
+      editable: "never",
+    },
+    {
+      title: "Continuity",
+      field: "continuity",
     },
   ];
 
   const handleRowUpdate = (newData, oldData, resolve) => {
     // console.log("TODO: parseInt from Material Table in the first place");
-    newData.sceneNumber = parseInt(newData.sceneNumber);
-    newData.playDay = parseInt(newData.playDay);
-    dispatch(updateScene(newData));
+    // newData.sceneNumber = parseInt(newData.sceneNumber);
+    // newData.playDay = parseInt(newData.playDay);
+    // dispatch(updateScene(newData));
 
     resolve();
   };
 
   const handleRowAdd = (newData, resolve) => {
-    dispatch(createScene(newData, scriptId));
+    // dispatch(createScene(newData, scriptId));
 
     resolve();
   };
 
   function handleRowDelete(oldData, resolve) {
-    dispatch(deleteScene(oldData._id));
-    console.log(
-      "TODO: sometimes a pagination error appears when the last item of a page gets deleted"
-    );
+    // dispatch(deleteScene(oldData._id));
+    // console.log(
+    //   "TODO: sometimes a pagination error appears when the last item of a page gets deleted"
+    // );
     // .then((res) => {
     //   // this is neccecary to avoid pagination error
     //   const scenesDelete = [...scenes];
@@ -204,29 +154,33 @@ function MaterialTables({ script }) {
       <Grid container spacing={1}>
         <Grid item xs={12}>
           <MaterialTable
-            title={`Script - ${script.name}`}
+            // title={`Script - ${script.name}`}
             columns={columns}
             data={scenes}
-            detailPanel={detailPanel}
             icons={tableIcons}
             options={{
-              sorting: true,
+              search: false,
+              sorting: false,
               paging: false,
               addRowPosition: "first",
+              showTitle: false,
+              draggable: false,
+              toolbar: false,
+              toolbarButtonAlignment: "left",
             }}
             editable={{
               onRowUpdate: (newData, oldData) =>
                 new Promise((resolve) => {
                   handleRowUpdate(newData, oldData, resolve);
                 }),
-              onRowAdd: (newData) =>
-                new Promise((resolve) => {
-                  handleRowAdd(newData, resolve);
-                }),
-              onRowDelete: (oldData) =>
-                new Promise((resolve) => {
-                  handleRowDelete(oldData, resolve);
-                }),
+              // onRowAdd: (newData) =>
+              //   new Promise((resolve) => {
+              //     handleRowAdd(newData, resolve);
+              //   }),
+              // onRowDelete: (oldData) =>
+              //   new Promise((resolve) => {
+              //     handleRowDelete(oldData, resolve);
+              //   }),
             }}
           />
         </Grid>
@@ -235,4 +189,4 @@ function MaterialTables({ script }) {
   );
 }
 
-export default MaterialTables;
+export default RoleCardTable;
