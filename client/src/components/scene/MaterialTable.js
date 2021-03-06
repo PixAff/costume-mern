@@ -22,7 +22,7 @@ import ViewColumn from "@material-ui/icons/ViewColumn";
 // import Alert from "@material-ui/lab/Alert";
 import { useDispatch, useSelector } from "react-redux";
 import { createScene, deleteScene, updateScene } from "../../actions/scenes";
-import { Button } from "@material-ui/core";
+import { Button, Chip } from "@material-ui/core";
 import RolesModal from "../role/RolesModal";
 import { moods } from "../../constants/general";
 
@@ -71,11 +71,20 @@ function MaterialTables({ script }) {
   }, [fetchedScenes, fetchedRoles]);
 
   const columns = [
-    { title: "id", field: "_id", hidden: true },
+    { title: "id", field: "_id", width: "0px", hidden: true },
     {
       title: "NR",
       field: "sceneNumber",
       defaultSort: "asc",
+      width: "1%",
+      cellStyle: { whiteSpace: "nowrap", textAlign: "center" },
+      headerStyle: {
+        whiteSpace: "nowrap",
+        backgroundColor: "#fafafa",
+        textAlign: "center",
+      },
+      sorting: false,
+
       validate: (rowData) =>
         /\D/.test(rowData.sceneNumber) || rowData.sceneNumber.length < 1
           ? { isValid: false, helperText: "Please enter a number!" }
@@ -84,14 +93,15 @@ function MaterialTables({ script }) {
     {
       title: "Day",
       field: "playDay",
-      cellStyle: {
-        maxWidth: 20,
-        width: 20,
-      },
+      width: "1%",
+      cellStyle: { whiteSpace: "nowrap", textAlign: "center" },
       headerStyle: {
-        maxWidth: 20,
-        width: 20,
+        whiteSpace: "nowrap",
+        backgroundColor: "#fafafa",
+        textAlign: "center",
       },
+      sorting: false,
+
       validate: (rowData) =>
         /\D/.test(rowData.playDay) || rowData.playDay.length < 1
           ? { isValid: false, helperText: "Please enter a number!" }
@@ -104,68 +114,114 @@ function MaterialTables({ script }) {
       sorting: false,
       lookup: moods,
     },
-    { title: "Motif", field: "place", sorting: false },
+    {
+      title: "Motif",
+      field: "place",
+      sorting: false,
+      cellStyle: {
+        minWidth: 100,
+      },
+      headerStyle: {
+        minWidth: 100,
+      },
+    },
     {
       title: "Content",
       field: "description",
       sorting: false,
-      cellStyle: {
-        minWidth: 400,
-      },
-      headerStyle: {
-        minWidth: 400,
-      },
+      // cellStyle: {
+      //   minWidth: 400,
+      // },
+      // headerStyle: {
+      //   minWidth: 400,
+      // },
     },
     {
       title: "notes",
       field: "notes",
       sorting: false,
+      // cellStyle: {
+      //   minWidth: 300,
+      // },
+      // headerStyle: {
+      //   minWidth: 300,
+      // },
+    },
+    {
+      title: "Cast",
+      field: "roles",
       cellStyle: {
-        minWidth: 300,
+        minWidth: 320,
       },
       headerStyle: {
-        minWidth: 300,
+        minWidth: 320,
       },
+      render: (rowData) => (
+        <div>
+          <RolesModal
+            key={rowData.tableData.id}
+            scene={rowData}
+            allRoles={allRoles}
+          />
+          {rowData.roles &&
+            rowData.roles.map((role) => (
+              <Chip
+                style={{ margin: 2 }}
+                size="small"
+                label={role.name}
+                key={role._id}
+                color="primary"
+                clickable
+                variant="outlined"
+              />
+            ))}
+        </div>
+      ),
+      sorting: false,
     },
   ];
 
-  const detailPanel = [
-    {
-      tooltip: "ROLES",
-      icon: tableIcons.DetailPanel,
-      render: (rowData) => {
-        return (
-          <Grid
-            container
-            style={{
-              fontSize: 16,
-              textAlign: "center",
-              color: "white",
-              backgroundColor: "#AAAAAA",
-            }}
-          >
-            <Grid item xs={1}>
-              <RolesModal
-                key={rowData.tableData.id}
-                scene={rowData}
-                allRoles={allRoles}
-              />
-            </Grid>
-            <Grid item xs={11}>
-              <div>
-                {rowData.roles &&
-                  rowData.roles.map((role) => (
-                    <Button key={role._id} color="inherit">
-                      {role.name}
-                    </Button>
-                  ))}
-              </div>
-            </Grid>
-          </Grid>
-        );
-      },
-    },
-  ];
+  // const detailPanel = [
+  //   {
+  //     tooltip: "ROLES",
+  //     icon: tableIcons.DetailPanel,
+  //     render: (rowData) => {
+  //       return (
+  //         <Grid
+  //           container
+  //           style={{
+  //             fontSize: 16,
+  //             textAlign: "center",
+  //             color: "white",
+  //             backgroundColor: "#AAAAAA",
+  //           }}
+  //         >
+  //           <Grid item xs={1}>
+  //             <RolesModal
+  //               key={rowData.tableData.id}
+  //               scene={rowData}
+  //               allRoles={allRoles}
+  //             />
+  //           </Grid>
+  //           <Grid item xs={11}>
+  //             <div>
+  //               {rowData.roles &&
+  //                 rowData.roles.map((role) => (
+  //                   <Chip
+  //                     label={role.name}
+  //                     key={role._id}
+  //                     color="primary"
+  //                     clickable
+  //                     variant="outlined"
+  //                   />
+  //                 ))}
+  //             </div>
+  //           </Grid>
+  //         </Grid>
+  //       );
+  //     },
+  //   },
+  // ];
 
   const handleRowUpdate = (newData, oldData, resolve) => {
     // console.log("TODO: parseInt from Material Table in the first place");
@@ -207,12 +263,16 @@ function MaterialTables({ script }) {
             title={`Script - ${script.name}`}
             columns={columns}
             data={scenes}
-            detailPanel={detailPanel}
+            // detailPanel={detailPanel}
             icons={tableIcons}
             options={{
               sorting: true,
               paging: false,
               addRowPosition: "first",
+              draggable: false,
+              toolbarButtonAlignment: "left",
+
+              // tableLayout: "fixed",
             }}
             editable={{
               onRowUpdate: (newData, oldData) =>

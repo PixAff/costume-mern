@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Modal from "@material-ui/core/Modal";
-import { Button, Tooltip } from "@material-ui/core";
+import { Button, Chip, Tooltip } from "@material-ui/core";
 import Edit from "@material-ui/icons/Edit";
 import TransferList from "./TransferList";
 import RoleForm from "../role/RoleForm";
@@ -57,14 +57,18 @@ export default function RolesModal({ scene, allRoles }) {
   return (
     <div>
       <Tooltip title="Edit Roles">
-        <Button
+        <Chip
+          style={{ margin: 2 }}
           size="small"
           color="secondary"
           aria-label="edit"
+          label="edit"
           onClick={handleOpen}
+          // variant="outlined"
+          // clickable
         >
-          <Edit />
-        </Button>
+          {/* <Edit /> */}
+        </Chip>
       </Tooltip>
       <Modal
         open={open}
