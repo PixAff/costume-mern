@@ -19,7 +19,11 @@ import {
   addRolesToScene,
 } from "../controllers/sceneController.js";
 
-import { createRole, getRoles } from "../controllers/roleController.js";
+import {
+  createRole,
+  getRoles,
+  deleteRole,
+} from "../controllers/roleController.js";
 
 // SCRIPT
 router.get("/scripts", getScripts);
@@ -40,5 +44,6 @@ router.patch("/roles/scene/:sceneid", addRolesToScene);
 // ROLE
 router.get("/roles/:scriptid", getRoles);
 router.post("/roles/:scriptid", createRole);
+router.delete("/role/:id", deleteRole);
 
 export default router;

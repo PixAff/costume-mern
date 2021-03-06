@@ -5,6 +5,7 @@ import SingleScript from "./components/script/SingleScript";
 import HomePage from "./components/main/Homepage";
 import ScriptsPage from "./components/main/ScriptsPage";
 import ErrorNotification from "./components/main/ErrorNotification";
+import RolesPage from "./components/main/RolesPage";
 
 const App = () => {
   return (
@@ -17,8 +18,13 @@ const App = () => {
           <Route exact path="/scripts" component={ScriptsPage} />
           <Route
             exact
-            path="/scripts/:id"
+            path="/scripts/:id/scenes"
             render={(props) => <SingleScript {...props} />}
+          />
+          <Route
+            exact
+            path="/scripts/:id/roles"
+            render={(props) => <RolesPage {...props} />}
           />
         </Switch>
       </div>

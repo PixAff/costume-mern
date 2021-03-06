@@ -1,3 +1,5 @@
+// THIS FILE IS ONLY KEPT AS REFERENCE TO THE ORIGINAL MATERIAL TABLE
+
 import { useState, useEffect } from "react";
 import { forwardRef } from "react";
 // import Avatar from 'react-avatar';
@@ -27,20 +29,14 @@ import RolesModal from "../role/RolesModal";
 import { moods } from "../../constants/general";
 
 const tableIcons = {
-  Add: forwardRef((props, ref) => (
-    <AddBox color="secondary" {...props} ref={ref} />
-  )),
+  Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
   Check: forwardRef((props, ref) => <Check {...props} ref={ref} />),
   Clear: forwardRef((props, ref) => <Clear {...props} ref={ref} />),
-  Delete: forwardRef((props, ref) => (
-    <DeleteOutline color="secondary" {...props} ref={ref} />
-  )),
+  Delete: forwardRef((props, ref) => <DeleteOutline {...props} ref={ref} />),
   DetailPanel: forwardRef((props, ref) => (
     <ChevronRight {...props} ref={ref} />
   )),
-  Edit: forwardRef((props, ref) => (
-    <Edit color="secondary" {...props} ref={ref} />
-  )),
+  Edit: forwardRef((props, ref) => <Edit {...props} ref={ref} />),
   Export: forwardRef((props, ref) => <SaveAlt {...props} ref={ref} />),
   Filter: forwardRef((props, ref) => <FilterList {...props} ref={ref} />),
   FirstPage: forwardRef((props, ref) => <FirstPage {...props} ref={ref} />),
@@ -165,22 +161,127 @@ function MaterialTables({ script }) {
         );
       },
     },
+    // {
+    //   icon: "favorite_border",
+    //   openIcon: "favorite",
+    //   tooltip: "Show Both",
+    //   render: (rowData) => {
+    //     return (
+    //       <div
+    //         style={{
+    //           fontSize: 16,
+    //           textAlign: "center",
+    //           color: "white",
+    //           backgroundColor: "#FDD835",
+    //         }}
+    //       >
+    //         {rowData.id} {rowData.mood}
+    //       </div>
+    //     );
+    //   },
+    // },
   ];
+
+  //for error handling
+  //   const [iserror, setIserror] = useState(false);
+  //   const [errorMessages, setErrorMessages] = useState([]);
 
   const handleRowUpdate = (newData, oldData, resolve) => {
     // console.log("TODO: parseInt from Material Table in the first place");
     newData.sceneNumber = parseInt(newData.sceneNumber);
     newData.playDay = parseInt(newData.playDay);
     dispatch(updateScene(newData));
+    //validation
+    //   let errorList = [];
+    //   if (newData.first_name === "") {
+    //     errorList.push("Please enter first name");
+    //   }
+    //   if (newData.last_name === "") {
+    //     errorList.push("Please enter last name");
+    //   }
+    //   if (newData.email === "" || validateEmail(newData.email) === false) {
+    //     errorList.push("Please enter a valid email");
+    //   }
 
+    //   if (errorList.length < 1) {
+    //     api
+    //       .patch("/users/" + newData.id, newData)
+    //       .then((res) => {
+    //         const dataUpdate = [...data];
+    //         const index = oldData.tableData.id;
+    //         dataUpdate[index] = newData;
+    //         setData([...dataUpdate]);
+    //         resolve();
+    //         setIserror(false);
+    //         setErrorMessages([]);
+    //       })
+    //       .catch((error) => {
+    //         setErrorMessages(["Update failed! Server error"]);
+    //         setIserror(true);
+    //         resolve();
+    //       });
+    //   } else {
+    //     setErrorMessages(errorList);
+    //     setIserror(true);
     resolve();
+    //   }
   };
 
   const handleRowAdd = (newData, resolve) => {
-    dispatch(createScene(newData, scriptId));
+    //     //validation
+    let errorList = [];
+    //     if (newData.first_name === undefined) {
+    //       errorList.push("Please enter first name");
+    //     }
+    //     if (newData.last_name === undefined) {
+    //       errorList.push("Please enter last name");
+    //     }
+    //     if (newData.email === undefined || validateEmail(newData.email) === false) {
+    //       errorList.push("Please enter a valid email");
+    //     }
 
+    if (errorList.length < 1) {
+      //no error
+      dispatch(createScene(newData, scriptId));
+    }
+    //       api
+    //         .post("/users", newData)
+    //         .then((res) => {
+    //           let dataToAdd = [...data];
+    //           dataToAdd.push(newData);
+    //           setData(dataToAdd);
+    //           resolve();
+    //           setErrorMessages([]);
+    //           setIserror(false);
+    //         })
+    //         .catch((error) => {
+    //           setErrorMessages(["Cannot add data. Server error!"]);
+    //           setIserror(true);
+    //           resolve();
+    //         });
+    //     } else {
+    //       setErrorMessages(errorList);
+    //       setIserror(true);
     resolve();
+    //     }
   };
+
+  //   const handleRowDelete = (oldData, resolve) => {
+  //     api
+  //       .delete("/users/" + oldData.id)
+  //       .then((res) => {
+  //         const dataDelete = [...data];
+  //         const index = oldData.tableData.id;
+  //         dataDelete.splice(index, 1);
+  //         setData([...dataDelete]);
+  //         resolve();
+  //       })
+  //       .catch((error) => {
+  //         setErrorMessages(["Delete failed! Server error"]);
+  //         setIserror(true);
+  //         resolve();
+  //       });
+  //   };
 
   function handleRowDelete(oldData, resolve) {
     dispatch(deleteScene(oldData._id));
@@ -203,7 +304,24 @@ function MaterialTables({ script }) {
     <div>
       <Grid container spacing={1}>
         <Grid item xs={12}>
+          {/* <div>
+            {iserror && (
+              <Alert severity="error">
+                {errorMessages.map((msg, i) => {
+                  return <div key={i}>{msg}</div>;
+                })}
+              </Alert>
+            )}
+          </div> */}
           <MaterialTable
+            actions={[
+              {
+                icon: "add",
+                tooltip: "Add User",
+                isFreeAction: true,
+                onClick: (event) => alert("You want to add a new row"),
+              },
+            ]}
             title={`Script - ${script.name}`}
             columns={columns}
             data={scenes}

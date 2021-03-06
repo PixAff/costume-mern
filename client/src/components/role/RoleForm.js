@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Button, Paper, TextField, Typography } from "@material-ui/core";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 
 import useStyles from "../styles";
 import { createRole } from "../../actions/roles";
@@ -10,7 +10,7 @@ const RoleForm = ({ scene }) => {
   // TODO: Sometimes the script is not beeing populated with scene (workaround:
   // conditional setting of script)
   console.log("RoleForm", scene.script);
-  const error = useSelector((state) => state.errors);
+  // const error = useSelector((state) => state.errors);
 
   const [roleData, setRoleData] = useState({
     name: "",

@@ -1,7 +1,7 @@
 import {
   CLEAR_ROLES,
   CREATE_ROLE,
-  // DELETE_ROLE,
+  DELETE_ROLE,
   // FETCH_ROLE,
   FETCH_ROLES,
   // UPDATE_ROLE,
@@ -20,8 +20,8 @@ export default function roles(roles = [], action) {
     //   );
     case CLEAR_ROLES:
       return [];
-    // case DELETE_ROLE:
-    //   return roles.filter((role) => role._id !== action.payload);
+    case DELETE_ROLE:
+      return roles.filter((role) => role._id !== action.payload);
     default:
       return roles;
   }

@@ -1,31 +1,25 @@
-import { Button } from "@material-ui/core";
-import {
-  Page,
-  Text,
-  View,
-  Document,
-  StyleSheet,
-  PDFDownloadLink,
-  BlobProvider,
-} from "@react-pdf/renderer";
+import { Chip } from "@material-ui/core";
+import { BlobProvider } from "@react-pdf/renderer";
 import axios from "axios";
-import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useState } from "react";
+// import { useSelector } from "react-redux";
 import Output from "./scenes";
+// import FaceIcon from "@material-ui/icons/Face";
+import PictureAsPdfIcon from "@material-ui/icons/PictureAsPdf";
 // import Output from "./resume";
 
 // Create styles
-const styles = StyleSheet.create({
-  page: {
-    flexDirection: "row",
-    backgroundColor: "#E4E4E4",
-  },
-  section: {
-    margin: 10,
-    padding: 10,
-    flexGrow: 1,
-  },
-});
+// const styles = StyleSheet.create({
+//   page: {
+//     flexDirection: "row",
+//     backgroundColor: "#E4E4E4",
+//   },
+//   section: {
+//     margin: 10,
+//     padding: 10,
+//     flexGrow: 1,
+//   },
+// });
 
 export default function TheButton() {
   const [fetching, setFetching] = useState(true);
@@ -56,9 +50,16 @@ export default function TheButton() {
     <Pdf data={data} />
   ) : (
     <div>
-      <Button variant="contained" color="inherit" onClick={fetchData}>
+      <Chip
+        variant="outlined"
+        color="primary"
+        icon={<PictureAsPdfIcon />}
+        label="create Table"
+        onClick={fetchData}
+      />
+      {/* <Button variant="contained" color="inherit" onClick={fetchData}>
         create Table
-      </Button>
+      </Button> */}
       {/* <Button disabled variant="contained" color="inherit">
         Fetching Data
       </Button> */}
@@ -90,11 +91,16 @@ function Pdf({ data }) {
         {({ blob, url, loading, error }) => {
           // Do whatever you need with blob here
           return (
-            <Button variant="contained" color="inherit">
-              <a href={url} target="_blank">
-                blub
-              </a>
-            </Button>
+            <Chip
+              variant="outlined"
+              color="secondary"
+              icon={<PictureAsPdfIcon />}
+              label="download Table"
+              component="a"
+              href={url}
+              target="_blank"
+              clickable
+            />
           );
         }}
       </BlobProvider>

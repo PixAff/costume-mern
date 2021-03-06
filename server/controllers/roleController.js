@@ -3,6 +3,22 @@ import Script from "../models/Script.js";
 import Scene from "../models/Scene.js";
 import Role from "../models/Role.js";
 
+function handleError(res, error) {
+  let errorsMsg = [];
+  if (error.errors) {
+    console.log("1", error, error.errors);
+    Object.entries(error.errors).forEach(([key, value]) =>
+      errorsMsg.push({
+        path: value.properties.path,
+        msg: value.properties.message,
+      })
+    );
+  } else {
+    errorsMsg.push({ path: "MongoError", msg: error.code });
+  }
+  res.status(422).json({ message: errorsMsg });
+}
+
 export const createRole = async (req, res) => {
   console.log(req.body);
   const { name, actor, notes } = req.body;
@@ -20,19 +36,7 @@ export const createRole = async (req, res) => {
     await newRole.save();
     res.status(201).json(newRole);
   } catch (error) {
-    let errorsMsg = [];
-    if (error.errors) {
-      console.log("1", error, error.errors);
-      Object.entries(error.errors).forEach(([key, value]) =>
-        errorsMsg.push({
-          path: value.properties.path,
-          msg: value.properties.message,
-        })
-      );
-    } else {
-      errorsMsg.push({ path: "MongoError", msg: error.code });
-    }
-    res.status(422).json({ message: errorsMsg });
+    handleError(res, error);
   }
 };
 
@@ -81,16 +85,16 @@ export const getRoles = async (req, res) => {
 //   res.status(200).json(updatedScene);
 // };
 
-// export const deleteScene = async (req, res) => {
-//   const scene = await Scene.findByIdAndRemove(
-//     { _id: req.params.id },
-//     function (err) {
-//       // if (err) return handleError(err);
-//       if (err) console.log(err);
-//     }
-//   );
-//   res.json({ message: `${req.params.id} removed`, id: req.params.id });
-// };
+export const deleteRole = async (req, res) => {
+  const role = await Role.findByIdAndRemove(
+    { _id: req.params.id },
+    function (err) {
+      // if (err) return handleError(err);
+      if (err) console.log(err);
+    }
+  );
+  res.json({ message: `${req.params.id} removed`, id: req.params.id });
+};
 
 // export const likeScript = async (req, res) => {
 //   const { id } = req.params;

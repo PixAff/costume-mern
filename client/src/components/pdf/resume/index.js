@@ -1,7 +1,6 @@
 import {
   Text,
   Document,
-  Font,
   Page,
   StyleSheet,
   Image,

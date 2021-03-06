@@ -32,7 +32,11 @@ export default function ScriptCard({ script, setCurrentId }) {
       <CardContent>
         <div className="">
           <Typography variant="h6" style={{ color: "green" }}>
-            <Link to={`/scripts/${script._id}`} idse="test" className="item">
+            <Link
+              to={`/scripts/${script._id}/scenes`}
+              idse="test"
+              className="item"
+            >
               {script.name}
             </Link>
           </Typography>

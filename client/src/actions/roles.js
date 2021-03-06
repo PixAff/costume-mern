@@ -6,6 +6,7 @@ import {
   // DELETE_ROLE,
   // FETCH_ROLE,
   FETCH_ROLES,
+  DELETE_ROLE,
   // CLEAR_ROLES,
   // UPDATE_ROLE,
 } from "../constants/actionTypes";
@@ -39,11 +40,11 @@ export const createRole = (role) => async (dispatch) => {
 //   dispatch({ type: UPDATE_SCENE, payload: data });
 // };
 
-// export const deleteScene = (scriptId, id) => async (dispatch) => {
-//   const { data } = await axios.delete(`/script/${scriptId}/scene/${id}`);
-//   dispatch({ type: DELETE_SCENE, payload: data.id });
-//   // return data.id;
-// };
+export const deleteRole = (id) => async (dispatch) => {
+  const { data } = await axios.delete(`/role/${id}`);
+  dispatch({ type: DELETE_ROLE, payload: data.id });
+  // return data.id;
+};
 
 // export const likeScript = (id) => async (dispatch) => {
 //   const { data } = await axios.patch(`/${id}/likeScript`);

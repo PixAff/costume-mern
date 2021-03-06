@@ -6,6 +6,7 @@ import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";
 import { Link } from "react-router-dom";
 import { Box } from "@material-ui/core";
+import { useSelector } from "react-redux";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -22,8 +23,13 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function ButtonAppBar() {
+export default function ButtonAppBar(params) {
   const classes = useStyles();
+  const scenes = useSelector((state) => state.scenes);
+  const roles = useSelector((state) => {
+    console.log(state.roles);
+    return state.roles;
+  });
 
   return (
     <div className={classes.root}>
@@ -63,10 +69,26 @@ export default function ButtonAppBar() {
               </Button>
             </Box>
             <Box>
-              <Button color="inherit">Scenes</Button>
+              {scenes.length > 0 && (
+                <Button
+                  color="inherit"
+                  component={Link}
+                  to={`/scripts/${roles[0].script}/scenes`}
+                >
+                  Scenes
+                </Button>
+              )}
             </Box>
             <Box>
-              <Button color="inherit">Roles</Button>
+              {roles.length > 0 && (
+                <Button
+                  color="inherit"
+                  component={Link}
+                  to={`/scripts/${roles[0].script}/roles`}
+                >
+                  Roles
+                </Button>
+              )}
             </Box>
           </Box>
 
