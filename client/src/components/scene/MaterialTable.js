@@ -22,9 +22,19 @@ import ViewColumn from "@material-ui/icons/ViewColumn";
 // import Alert from "@material-ui/lab/Alert";
 import { useDispatch, useSelector } from "react-redux";
 import { createScene, deleteScene, updateScene } from "../../actions/scenes";
-import { Button, Chip } from "@material-ui/core";
+import { Button, Chip, makeStyles } from "@material-ui/core";
 import RolesModal from "../role/RolesModal";
 import { moods } from "../../constants/general";
+import { Link } from "react-router-dom";
+
+const useStyles = makeStyles(() => ({
+  root: {
+    fontFamily: "'Roboto', 'Helvetica', 'Arial', sans-serif",
+    fontSize: ".9rem",
+  },
+}));
+
+const tableTextColor = "#777777";
 
 const tableIcons = {
   Add: forwardRef((props, ref) => (
@@ -57,6 +67,7 @@ const tableIcons = {
 };
 
 function MaterialTables({ script }) {
+  const classes = useStyles();
   const dispatch = useDispatch();
   const [scenes, setScenes] = useState([]);
   const [allRoles, setAllRoles] = useState([]);
@@ -77,10 +88,15 @@ function MaterialTables({ script }) {
       field: "sceneNumber",
       defaultSort: "asc",
       width: "1%",
-      cellStyle: { whiteSpace: "nowrap", textAlign: "center" },
+
+      cellStyle: {
+        whiteSpace: "nowrap",
+        textAlign: "center",
+        fontSize: "1rem",
+        color: tableTextColor,
+      },
       headerStyle: {
         whiteSpace: "nowrap",
-        backgroundColor: "#fafafa",
         textAlign: "center",
       },
       sorting: false,
@@ -94,10 +110,13 @@ function MaterialTables({ script }) {
       title: "Day",
       field: "playDay",
       width: "1%",
-      cellStyle: { whiteSpace: "nowrap", textAlign: "center" },
+      cellStyle: {
+        whiteSpace: "nowrap",
+        textAlign: "center",
+        color: tableTextColor,
+      },
       headerStyle: {
         whiteSpace: "nowrap",
-        backgroundColor: "#fafafa",
         textAlign: "center",
       },
       sorting: false,
@@ -120,6 +139,7 @@ function MaterialTables({ script }) {
       sorting: false,
       cellStyle: {
         minWidth: 100,
+        color: tableTextColor,
       },
       headerStyle: {
         minWidth: 100,
@@ -156,6 +176,7 @@ function MaterialTables({ script }) {
       headerStyle: {
         minWidth: 320,
       },
+      editable: "never",
       render: (rowData) => (
         <div>
           <RolesModal
@@ -171,8 +192,13 @@ function MaterialTables({ script }) {
                 label={role.name}
                 key={role._id}
                 color="primary"
-                clickable
+                // clickable
                 variant="outlined"
+                component={Link}
+                to={{
+                  pathname: `/scripts/${role.script}/role/${role._id}`,
+                  state: { role },
+                }}
               />
             ))}
         </div>
@@ -256,8 +282,8 @@ function MaterialTables({ script }) {
   }
 
   return (
-    <div>
-      <Grid container spacing={1}>
+    <>
+      <Grid container spacing={1} className={classes.root}>
         <Grid item xs={12}>
           <MaterialTable
             title={`Script - ${script.name}`}
@@ -271,8 +297,11 @@ function MaterialTables({ script }) {
               addRowPosition: "first",
               draggable: false,
               toolbarButtonAlignment: "left",
-
-              // tableLayout: "fixed",
+              headerStyle: {
+                backgroundColor: "#fafafa",
+                fontSize: "1rem",
+              },
+              cellStyle: { color: tableTextColor },
             }}
             editable={{
               onRowUpdate: (newData, oldData) =>
@@ -291,7 +320,7 @@ function MaterialTables({ script }) {
           />
         </Grid>
       </Grid>
-    </div>
+    </>
   );
 }
 

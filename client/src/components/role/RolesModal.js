@@ -55,7 +55,7 @@ export default function RolesModal({ scene, allRoles }) {
   );
 
   return (
-    <div>
+    <>
       <Tooltip title="Edit Roles">
         <Chip
           style={{ margin: 2 }}
@@ -65,7 +65,6 @@ export default function RolesModal({ scene, allRoles }) {
           label="edit"
           onClick={handleOpen}
           // variant="outlined"
-          // clickable
         >
           {/* <Edit /> */}
         </Chip>
@@ -78,6 +77,6 @@ export default function RolesModal({ scene, allRoles }) {
       >
         {body}
       </Modal>
-    </div>
+    </>
   );
 }
