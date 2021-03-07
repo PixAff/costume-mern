@@ -192,7 +192,7 @@ function MaterialTables({ script }) {
                 label={role.name}
                 key={role._id}
                 color="primary"
-                // clickable
+                clickable
                 variant="outlined"
                 component={Link}
                 to={{
