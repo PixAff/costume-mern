@@ -21,13 +21,14 @@ function handleError(res, error) {
 
 export const createRole = async (req, res) => {
   console.log(req.body);
-  const { name, actor, notes } = req.body;
+  const { name, actor, notes, category } = req.body;
   const script = req.params.scriptid;
 
   const newRole = new Role({
     name,
     actor,
     notes,
+    category,
     script,
   });
 

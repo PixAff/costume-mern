@@ -26,11 +26,22 @@ import { Button, Chip, makeStyles } from "@material-ui/core";
 import RolesModal from "../role/RolesModal";
 import { moods } from "../../constants/general";
 import { Link } from "react-router-dom";
+import classNames from "classnames";
 
 const useStyles = makeStyles(() => ({
   root: {
     fontFamily: "'Roboto', 'Helvetica', 'Arial', sans-serif",
     fontSize: ".9rem",
+  },
+  catMain: {
+    Backgoundcolor: "#ff00ff",
+  },
+  catSupport: {
+    Backgoundcolor: "#0000ff",
+    margin: 20,
+  },
+  catExtra: {
+    Backgoundcolor: "#ff0000",
   },
 }));
 
@@ -190,12 +201,18 @@ function MaterialTables({ script }) {
             rowData.roles.map((role) => (
               <Chip
                 style={{ margin: 2 }}
+                // THIS DOES NOT WORK:
+                // classes={classNames({
+                //   catMain: role.category === "main",
+                //   catSupport: role.category === "support",
+                //   catExtra: role.category === "extra",
+                // })}
                 size="small"
                 label={role.name}
                 key={role._id}
-                color="primary"
+                color={role.category === "general" ? "secondary" : "primary"}
                 clickable
-                variant="outlined"
+                variant={role.category === "main" ? "default" : "outlined"}
                 component={Link}
                 to={{
                   pathname: `/scripts/${role.script}/role/${role._id}`,

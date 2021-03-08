@@ -20,6 +20,11 @@ const roleSchema = mongoose.Schema({
     type: Date,
     default: Date.now,
   },
+  category: {
+    type: String,
+    enum: ["main", "support", "extra", "general"],
+    default: "general",
+  },
   script: {
     type: mongoose.Schema.ObjectId,
     ref: "Script",

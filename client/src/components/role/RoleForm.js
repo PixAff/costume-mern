@@ -1,5 +1,15 @@
 import { useState } from "react";
-import { Button, Paper, TextField, Typography } from "@material-ui/core";
+import {
+  Button,
+  FormControl,
+  FormControlLabel,
+  FormLabel,
+  Paper,
+  Radio,
+  RadioGroup,
+  TextField,
+  Typography,
+} from "@material-ui/core";
 import { useDispatch } from "react-redux";
 
 import useStyles from "../styles";
@@ -16,11 +26,18 @@ const RoleForm = ({ scene }) => {
     name: "",
     actor: "",
     notes: "",
+    category: "general",
     script: scene.script._id || scene.script,
   });
 
   const dispatch = useDispatch();
   const classes = useStyles();
+
+  // const [category, setCategory] = useState("general");
+
+  // const handleChange = (event) => {
+  //   setCategory(event.target.value);
+  // };
 
   //   useEffect(() => {
   //     if (role) setRoleData(role);
@@ -32,6 +49,7 @@ const RoleForm = ({ scene }) => {
       name: "",
       actor: "",
       notes: "",
+      category: "general",
       script: scene.script._id || scene.script,
     });
   };
@@ -83,6 +101,36 @@ const RoleForm = ({ scene }) => {
               setRoleData({ ...roleData, notes: e.target.value })
             }
           />
+          <FormControl component="fieldset">
+            <FormLabel component="legend">Category</FormLabel>
+            <RadioGroup
+              row
+              aria-label="cast"
+              name="cast"
+              value={roleData.category}
+              onChange={(e) =>
+                setRoleData({ ...roleData, category: e.target.value })
+              }
+            >
+              <FormControlLabel value="main" control={<Radio />} label="Main" />
+              <FormControlLabel
+                value="support"
+                control={<Radio />}
+                label="Support"
+              />
+              <FormControlLabel
+                value="extra"
+                control={<Radio />}
+                label="Extra"
+              />
+              <FormControlLabel
+                value="general"
+                disabled
+                control={<Radio />}
+                label="General (default)"
+              />
+            </RadioGroup>
+          </FormControl>
           <Button
             className={classes.buttonSubmit}
             variant="contained"
