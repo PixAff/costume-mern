@@ -56,7 +56,7 @@ const tableIcons = {
   ViewColumn: forwardRef((props, ref) => <ViewColumn {...props} ref={ref} />),
 };
 
-function RoleCardTable({ script }) {
+function RoleCardTable({ script, scenes }) {
   // const dispatch = useDispatch();
   // const [scenes, setScenes] = useState([
   //   {
@@ -71,7 +71,9 @@ function RoleCardTable({ script }) {
   //   },
   // ]);
   // const [allRoles, setAllRoles] = useState([]);
-  const scenes = useSelector((state) => state.scenes);
+
+  // const scenes = useSelector((state) => state.scenes);
+
   // const fetchedRoles = useSelector((state) => state.roles);
   // const scriptId = script._id;
 

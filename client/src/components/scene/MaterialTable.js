@@ -71,7 +71,9 @@ function MaterialTables({ script }) {
   const dispatch = useDispatch();
   const [scenes, setScenes] = useState([]);
   const [allRoles, setAllRoles] = useState([]);
-  const fetchedScenes = useSelector((state) => state.scenes);
+  const fetchedScenes = useSelector((state) =>
+    state.scenes.sort((a, b) => a.sceneNumber - b.sceneNumber)
+  );
   const fetchedRoles = useSelector((state) => state.roles);
   const scriptId = script._id;
 
