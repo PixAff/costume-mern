@@ -52,7 +52,7 @@ export default function SingleRoleCard({ days, role, scenes }) {
   return (
     <>
       {days.map((day) => (
-        <Card className={classes.root}>
+        <Card key={day} className={classes.root}>
           <CardHeader
             avatar={
               <Avatar aria-label="play day" className={classes.avatar}>
