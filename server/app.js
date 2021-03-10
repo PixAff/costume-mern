@@ -30,8 +30,9 @@ app.use(cors());
 // app.use(express.static(path.join(__dirname, "public")));
 
 // Takes the raw requests and turns them into usable properties on req.body
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json({ limit: "10mb" }));
+// app.use(bodyParser({ limit: "50mb" }));
+app.use(bodyParser.urlencoded({ limit: "10mb", extended: true }));
 
 // Exposes a bunch of methods for validating data. Used heavily on userController.validateRegister
 // app.use(expressValidator());

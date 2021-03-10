@@ -15,6 +15,8 @@ import breakfast from "./images/costumeTest/breakfast.jpg";
 import burgers from "./images/costumeTest/burgers.jpg";
 import vegetables from "./images/costumeTest/vegetables.jpg";
 import honey from "./images/costumeTest/honey.jpg";
+import ImageUpload from "./ImageUpload";
+import AllImages from "./AllImages";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -99,6 +101,8 @@ export default function CostumeImgCard() {
 
   return (
     <div className={classes.root}>
+      <ImageUpload />
+      <AllImages />
       <div className={classes.mainImage}>
         <img
           src={bike}
