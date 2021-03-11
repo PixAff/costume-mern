@@ -70,7 +70,7 @@ function MaterialTables({ script }) {
     { title: "id", field: "_id", hidden: true },
     {
       title: "NR",
-      field: "sceneNumber",
+      field: "sceneNumber" || "",
       defaultSort: "asc",
       validate: (rowData) =>
         /\D/.test(rowData.sceneNumber) || rowData.sceneNumber.length < 1

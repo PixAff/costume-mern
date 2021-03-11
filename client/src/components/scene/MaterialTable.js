@@ -143,12 +143,14 @@ function MaterialTables({ script }) {
     {
       title: "Mood",
       field: "mood",
+      initialEditValue: "",
       sorting: false,
       lookup: moods,
     },
     {
       title: "Motif",
       field: "place",
+      initialEditValue: "",
       sorting: false,
       cellStyle: {
         minWidth: 100,
@@ -161,24 +163,14 @@ function MaterialTables({ script }) {
     {
       title: "Content",
       field: "description",
+      initialEditValue: "",
       sorting: false,
-      // cellStyle: {
-      //   minWidth: 400,
-      // },
-      // headerStyle: {
-      //   minWidth: 400,
-      // },
     },
     {
       title: "notes",
       field: "notes",
+      initialEditValue: "",
       sorting: false,
-      // cellStyle: {
-      //   minWidth: 300,
-      // },
-      // headerStyle: {
-      //   minWidth: 300,
-      // },
     },
     {
       title: "Cast",

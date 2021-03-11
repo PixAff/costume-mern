@@ -5,6 +5,7 @@ import { Button, Chip, Tooltip } from "@material-ui/core";
 import Edit from "@material-ui/icons/Edit";
 import TransferList from "./TransferList";
 import RoleForm from "../role/RoleForm";
+import RoleDialog from "./RoleDialog";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -50,7 +51,8 @@ export default function RolesModal({ scene, allRoles }) {
           CANCEL
         </Button>
       </ButtonGroup> */}
-      <RoleForm scene={scene} />
+      {/* <RoleForm scene={scene} /> */}
+      <RoleDialog />
     </div>
   );
 

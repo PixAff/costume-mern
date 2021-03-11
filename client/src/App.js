@@ -7,6 +7,7 @@ import ScriptsPage from "./components/main/ScriptsPage";
 import ErrorNotification from "./components/main/ErrorNotification";
 import RolesPage from "./components/main/RolesPage";
 import SingleRole from "./components/role/SingleRole";
+import CostumesPage from "./components/main/CostumesPage";
 
 const App = () => {
   return (
@@ -31,6 +32,11 @@ const App = () => {
             exact
             path="/scripts/:id/role/:id"
             render={(props) => <SingleRole {...props} />}
+          />
+          <Route
+            exact
+            path="/scripts/:id/costumes"
+            render={(props) => <CostumesPage {...props} />}
           />
         </Switch>
       </div>

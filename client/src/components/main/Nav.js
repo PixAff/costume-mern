@@ -90,6 +90,17 @@ export default function ButtonAppBar(params) {
                 </Button>
               )}
             </Box>
+            <Box>
+              {roles.length > 0 && (
+                <Button
+                  color="inherit"
+                  component={Link}
+                  to={`/scripts/${roles[0].script}/costumes`}
+                >
+                  Costumes
+                </Button>
+              )}
+            </Box>
           </Box>
 
           <Button color="inherit">Login</Button>
