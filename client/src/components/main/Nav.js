@@ -69,7 +69,7 @@ export default function ButtonAppBar(params) {
               </Button>
             </Box>
             <Box>
-              {scenes.length > 0 && (
+              {scenes.length > 0 && roles.length > 0 && (
                 <Button
                   color="inherit"
                   component={Link}

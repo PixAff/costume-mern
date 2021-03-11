@@ -14,18 +14,22 @@ const sceneSchema = mongoose.Schema({
   mood: {
     type: String,
     trim: true,
+    default: "",
   },
   place: {
     type: String,
     trim: true,
+    default: "",
   },
   description: {
     type: String,
     trim: true,
+    default: "",
   },
   notes: {
     type: String,
     trim: true,
+    default: "",
   },
   created: {
     type: Date,

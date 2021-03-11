@@ -75,7 +75,10 @@ export const updateScene = async (req, res) => {
     _id,
   };
 
-  await Scene.findByIdAndUpdate(_id, updatedScene, { new: true });
+  await Scene.findByIdAndUpdate(_id, updatedScene, {
+    runValidators: true,
+    new: true,
+  });
 
   res.status(200).json(updatedScene);
 };
@@ -83,11 +86,16 @@ export const updateScene = async (req, res) => {
 export const deleteScene = async (req, res) => {
   const scene = await Scene.findByIdAndRemove(
     { _id: req.params.id },
-    function (err) {
+    function (err, docs) {
       // if (err) return handleError(err);
-      if (err) console.log(err);
+      if (err) {
+        console.log("ERR", err);
+      } else {
+        console.log("DOCS", docs);
+      }
     }
   );
+  // console.log(scene);
   res.json({ message: `${req.params.id} removed`, id: req.params.id });
 };
 

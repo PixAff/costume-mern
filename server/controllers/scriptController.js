@@ -1,5 +1,8 @@
 import mongoose from "mongoose";
 import Script from "../models/Script.js";
+import Scene from "../models/Scene.js";
+import Role from "../models/Role.js";
+
 // const User = mongoose.model("User");
 
 // const multer = require("multer");
@@ -154,15 +157,52 @@ export const updateScript = async (req, res) => {
   res.json(updatedScript);
 };
 
+async function deleteCorrespondingScenes(script) {
+  try {
+    const scenes = await Scene.deleteMany({
+      script: script,
+    });
+    console.log("Dele", scenes);
+    return scenes.deletedCount;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+async function deleteCorrespondingRoles(script) {
+  try {
+    const roles = await Role.deleteMany({ script });
+    console.log("Dele", roles);
+    return roles.deletedCount;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 export const deleteScript = async (req, res) => {
-  const script = await Script.findByIdAndRemove(
-    { _id: req.params.id },
-    function (err) {
-      // if (err) return handleError(err);
-      if (err) console.log(err);
-    }
-  );
-  res.json({ message: `${script} removed` });
+  const message = {};
+  try {
+    const script = await Script.findByIdAndRemove(
+      { _id: req.params.id }
+      // function (err, doc) {
+      //   // if (err) return handleError(err);
+      //   if (err) {
+      //     console.log(err);
+      //   } else {
+      //     console.log(doc);
+      //   }
+      // }
+    );
+    message["script"] = script;
+    message["deletedScenes"] = await deleteCorrespondingScenes(script);
+    message["deletedRoles"] = await deleteCorrespondingRoles(script);
+    console.log(message);
+    // res.json({ message: `${script} removed` });
+    res.json(message);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: error });
+  }
 };
 
 export const likeScript = async (req, res) => {
