@@ -1,5 +1,5 @@
 import { Box } from "@material-ui/core";
-import Roles from "../role/Roles";
+import RolesList from "../role/RolesList";
 import RoleDialog from "../role/RoleDialog";
 
 // const useStyles = makeStyles((theme) => ({
@@ -23,7 +23,7 @@ export default function RolesPage() {
 
     <Box mx={2}>
       <RoleDialog />
-      <Roles />
+      <RolesList />
 
       {/* <Paper elevation={1} variant="outlined">
       </Paper> */}

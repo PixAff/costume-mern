@@ -25,7 +25,7 @@ import {
   deleteRole,
 } from "../controllers/roleController.js";
 
-import { getImages, uploadImage } from "../controllers/cloudinaryController.js";
+import { getImages, uploadImage } from "../controllers/costumeController.js";
 
 // SCRIPT
 router.get("/scripts", getScripts);
@@ -50,6 +50,6 @@ router.delete("/role/:id", deleteRole);
 
 // Cloudinary
 router.post("/img/upload", uploadImage);
-router.get("/img", getImages);
+router.get("/img/:roleId", getImages);
 
 export default router;

@@ -4,7 +4,7 @@ import { useState } from "react";
 
 export default function ImageUpload() {
   const [fileInputState, setFileInputState] = useState("");
-  const [selectedFile, setSelectedFile] = useState("");
+  // const [selectedFile, setSelectedFile] = useState("");
   const [previewSource, setPreviewSource] = useState("");
 
   function handleFileInput(e) {
@@ -47,6 +47,7 @@ export default function ImageUpload() {
         <input
           type="file"
           name="image"
+          accept="image/x-png,image/gif,image/jpeg"
           onChange={handleFileInput}
           value={fileInputState}
         />
