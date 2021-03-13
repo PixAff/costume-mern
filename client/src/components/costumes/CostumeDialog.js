@@ -11,6 +11,7 @@ import { SET_ERROR } from "../../constants/actionTypes";
 import { createRole } from "../../actions/roles";
 import { useParams } from "react-router";
 import {
+  CircularProgress,
   FormControl,
   FormControlLabel,
   FormLabel,
@@ -22,6 +23,7 @@ import axios from "axios";
 export default function CostumeDialog({ role }) {
   const scriptId = useParams().id;
   const [open, setOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [costumeData, setCostumeData] = useState({
     name: "",
     role: role._id,
@@ -44,14 +46,13 @@ export default function CostumeDialog({ role }) {
   };
 
   const handleSubmitFile = (e) => {
-    console.log("sub");
     e.preventDefault();
     if (!previewSource) return;
     uploadImage(previewSource);
   };
 
   const uploadImage = async (base64EncodedImage) => {
-    console.log(base64EncodedImage);
+    setLoading(true);
     try {
       await axios.post(
         "/img/upload",
@@ -60,8 +61,11 @@ export default function CostumeDialog({ role }) {
           headers: { "Content-Type": "application/json" },
         }
       );
+      handleClose();
+      setLoading(false);
     } catch (error) {
       console.log(error);
+      setLoading(false);
     }
   };
 
@@ -130,6 +134,10 @@ export default function CostumeDialog({ role }) {
             </Button>
           </DialogActions>
         </form>
+        <div style={{ height: 40, textAlign: "center", padding: "1rem" }}>
+          {loading && <CircularProgress />}
+        </div>
+
         <div style={{ height: 200, textAlign: "center", padding: "1rem" }}>
           {previewSource && (
             <img

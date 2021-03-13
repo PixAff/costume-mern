@@ -6,7 +6,11 @@ export const uploadImage = async (req, res) => {
     const fileString = req.body.data;
     const uploadedResponse = await cloudinary.v2.uploader.upload(fileString, {
       upload_preset: "costume",
-      // tags: [req.body.costumeData.role, req.body.costumeData.name],
+      tags: [
+        req.body.costumeData.script,
+        req.body.costumeData.role,
+        req.body.costumeData.name,
+      ],
       context: {
         role: req.body.costumeData.role,
         costume: req.body.costumeData.name,
@@ -30,6 +34,32 @@ export const uploadImage = async (req, res) => {
   } catch (error) {
     console.log(error);
     res.status(500).json({ error });
+  }
+};
+
+export const deleteSingleImage = async (req, res) => {
+  const { id } = req.body;
+  if (!id) res.status(404).json({ msg: "file not found" });
+  try {
+    cloudinary.v2.api.delete_resources(id, function (error, result) {
+      console.log(result, error);
+    });
+    res.status(201).json(result);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const deleteImages = async (req, res) => {
+  const { id } = req.params;
+  if (!id) res.status(404).json({ msg: "file not found" });
+  try {
+    cloudinary.v2.api.delete_resources_by_tag(id, function (error, result) {
+      console.log(result, error);
+    });
+    res.status(201).json(result);
+  } catch (error) {
+    console.log(error);
   }
 };
 

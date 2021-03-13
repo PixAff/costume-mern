@@ -2,21 +2,19 @@ import { makeStyles } from "@material-ui/core/styles";
 import GridList from "@material-ui/core/GridList";
 import GridListTile from "@material-ui/core/GridListTile";
 import GridListTileBar from "@material-ui/core/GridListTileBar";
-import ListSubheader from "@material-ui/core/ListSubheader";
 import IconButton from "@material-ui/core/IconButton";
+import MoreIcon from "@material-ui/icons/MoreVert";
+import Menu from "@material-ui/core/Menu";
+import MenuItem from "@material-ui/core/MenuItem";
 import InfoIcon from "@material-ui/icons/Info";
 // import tileData from "./tileData";
+import DeleteOutline from "@material-ui/icons/DeleteOutline";
 
 import bike from "./images/costumeTest/bike.jpg";
-import hats from "./images/costumeTest/hats.jpg";
-import camera from "./images/costumeTest/camera.jpg";
-import morning from "./images/costumeTest/morning.jpg";
-import breakfast from "./images/costumeTest/breakfast.jpg";
-import burgers from "./images/costumeTest/burgers.jpg";
-import vegetables from "./images/costumeTest/vegetables.jpg";
-import honey from "./images/costumeTest/honey.jpg";
-import ImageUpload from "./ImageUpload";
-import AllImages from "./AllImages";
+import { Image } from "cloudinary-react";
+import { useParams } from "react-router";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -35,8 +33,13 @@ const useStyles = makeStyles((theme) => ({
     // width: 800,
     height: 368,
   },
+  titleBar: {
+    background:
+      "linear-gradient(to bottom, rgba(0,0,0,0.7) 0%, " +
+      "rgba(0,0,0,0.3) 70%, rgba(0,0,0,0) 100%)",
+  },
   icon: {
-    color: "rgba(255, 255, 255, 0.54)",
+    color: "rgba(255, 255, 255, 0.75)",
   },
   mainImage: {
     display: "flex",
@@ -47,62 +50,82 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-// *
-//  * The example data is structured as follows:
-//  *
-//  * import image from 'path/to/image.jpg';
-//  * [etc...]
-//  *
-const tileData = [
-  {
-    img: bike,
-    title: "Bike",
-    author: "Stefan",
-  },
-  {
-    img: hats,
-    title: "hats",
-    author: "Stefan",
-  },
-  {
-    img: camera,
-    title: "camera",
-    author: "Stefan",
-  },
-  {
-    img: morning,
-    title: "morning",
-    author: "Stefan",
-  },
-  {
-    img: honey,
-    title: "honey1",
-    author: "Stefan",
-  },
-  {
-    img: vegetables,
-    title: "vegetables1",
-    author: "Stefan",
-  },
-  {
-    img: breakfast,
-    title: "breakfast1",
-    author: "Stefan",
-  },
-  {
-    img: burgers,
-    title: "burgers",
-    author: "Stefan",
-  },
-];
+function SimpleMenu({ imageId, index, deleteImage }) {
+  const classes = useStyles();
+  const [anchorEl, setAnchorEl] = useState(null);
+
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    deleteImage(imageId, index);
+    setAnchorEl(null);
+  };
+
+  return (
+    <div>
+      <IconButton
+        aria-controls="simple-menu"
+        aria-haspopup="true"
+        onClick={handleClick}
+        className={classes.icon}
+      >
+        <MoreIcon />
+      </IconButton>
+      <Menu
+        id="simple-menu"
+        anchorEl={anchorEl}
+        keepMounted
+        open={Boolean(anchorEl)}
+        onClose={handleClose}
+      >
+        <MenuItem onClick={handleClose}>Galery</MenuItem>
+        <MenuItem onClick={handleClose}>delete</MenuItem>
+      </Menu>
+    </div>
+  );
+}
 
 export default function CostumeImgCard() {
   const classes = useStyles();
+  const [imageIds, setImageIds] = useState();
+  const { id } = useParams(); // role ID
+
+  const loadImages = async () => {
+    try {
+      const res = await axios.get(`/img/${id}`);
+      //   const { data } = await res.json();
+      console.log(res.data);
+      setImageIds(res.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const deleteImage = async (id, index) => {
+    const imgsDelete = [...imageIds];
+    try {
+      const confirmation = window.confirm(
+        "Do you really want to delete this image?"
+      );
+      if (confirmation) {
+        const res = await axios.delete(`/img`, { data: { id } });
+        console.log(res);
+        imgsDelete.splice(index, 1);
+        setImageIds([...imgsDelete]);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    loadImages();
+  }, []);
 
   return (
     <div className={classes.root}>
-      <ImageUpload />
-      <AllImages />
       <div className={classes.mainImage}>
         <img
           src={bike}
@@ -110,35 +133,43 @@ export default function CostumeImgCard() {
           style={{ maxHeight: "100%", maxWidth: "100%" }}
         />
       </div>
-      <GridList cellHeight={180} cols={3} className={classes.gridList}>
-        {/* <GridListTile key="Subheader" cols={2} style={{ height: "auto" }}>
-          <ListSubheader component="div">December</ListSubheader>
-        </GridListTile> */}
-        {tileData.map((tile) => (
-          <GridListTile style={{ width: "270px" }} key={tile.title}>
-            {/* <div style={{ width: "270px" }}> */}
-            <img
-              src={tile.img}
-              style={{ maxWidth: "100%", maxHeight: "100%" }}
-              alt={tile.title}
-            />
-            {/* </div> */}
 
-            <GridListTileBar
-              title={tile.title}
-              // subtitle={<span>by: {tile.author}</span>}
-              // actionIcon={
-              // <IconButton
-              // aria-label={`info about ${tile.title}`}
-              // className={classes.icon}
-              // toolTip={`info about ${tile.title}`}
-              // >
-              // <InfoIcon />
-              // </IconButton>
-              // }
-            />
-          </GridListTile>
-        ))}
+      <GridList cellHeight={180} cols={3} className={classes.gridList}>
+        {imageIds &&
+          imageIds.map((imageId, index) => (
+            <GridListTile style={{ width: "270px" }} key={imageId}>
+              <Image
+                // key={imageId}
+                cloudName={"pixelaffairs"}
+                publicId={imageId}
+                width={270}
+                crop="scale"
+                alt={imageId}
+              />
+              <GridListTileBar
+                // title="title"
+                titlePosition="top"
+                actionIcon={
+                  <>
+                    <SimpleMenu
+                      imageId={imageId}
+                      index={index}
+                      deleteImage={deleteImage}
+                    />
+                    <IconButton
+                      aria-label={`star ${"tile.title"}`}
+                      className={classes.icon}
+                      onClick={() => deleteImage(imageId, index)}
+                    >
+                      <MoreIcon />
+                    </IconButton>
+                  </>
+                }
+                actionPosition="right"
+                className={classes.titleBar}
+              />
+            </GridListTile>
+          ))}
       </GridList>
     </div>
   );

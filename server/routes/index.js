@@ -25,7 +25,11 @@ import {
   deleteRole,
 } from "../controllers/roleController.js";
 
-import { getImages, uploadImage } from "../controllers/costumeController.js";
+import {
+  deleteSingleImage,
+  getImages,
+  uploadImage,
+} from "../controllers/costumeController.js";
 
 // SCRIPT
 router.get("/scripts", getScripts);
@@ -51,5 +55,7 @@ router.delete("/role/:id", deleteRole);
 // Cloudinary
 router.post("/img/upload", uploadImage);
 router.get("/img/:roleId", getImages);
+router.delete("/img", deleteSingleImage);
+// router.delete("/imgs/:id", deleteImages); // receives either a script, a role or a costume id
 
 export default router;
