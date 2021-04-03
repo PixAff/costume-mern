@@ -9,7 +9,10 @@ import Button from "@material-ui/core/Button";
 import Paper from "@material-ui/core/Paper";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { addRolesToScene } from "../../actions/scenes";
+// import { addRolesToScene } from "../../actions/scenes";
+import { rolesSelector } from "../../slices/roles";
+import { updateScene } from "../../slices/scenes";
+// import axios from "axios";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -33,25 +36,43 @@ function intersection(a, b) {
   return a.filter((value) => b.indexOf(value) !== -1);
 }
 
-export default function TransferList({ allRoles, scene, setOpen }) {
+function leftRoles(scene, roles) {
+  console.log("thisF");
+  return roles.filter((a) => !scene.roles.map((b) => b._id).includes(a._id));
+}
+
+export default function TransferList({ scene, roles, setOpen }) {
+  console.log("render TransferList");
+  // axios
+  //   .get(
+  //     `https://api.musixmatch.com/ws/1.1/chart.tracks.get?chart_name=top&page=1&page_size=5&country=it&f_has_lyrics=1&apikey=b169a65682da0cc49ee7d42e5636d978`
+  //   )
+  //   .then((res) => console.log(res.data))
+  //   .catch((err) => console.log(err));
+
+  // const { roles } = useSelector(rolesSelector);
+  // TODO: this hack is neccessary since material table does not work well with immer
+  // see: https://stackoverflow.com/questions/59648434/material-table-typeerror-cannot-add-property-tabledata-object-is-not-extensibl
+  // const allRoles = JSON.parse(JSON.stringify(roles));
+
   const classes = useStyles();
   const dispatch = useDispatch();
   const [checked, setChecked] = useState([]);
   const [right, setRight] = useState([]);
-  const [left, setLeft] = useState([]);
-  const alleRollen = useSelector((state) => state.roles);
-  let cleanedLeft = alleRollen.filter(
-    (a) => !scene.roles.map((b) => b._id).includes(a._id)
-  );
+
+  // const initialLeft = leftRoles(scene, roles);
+
+  const [left, setLeft] = useState(leftRoles(scene, roles));
 
   useEffect(() => {
-    if (!scene.roles.length) {
-      setRight([]);
-    } else {
-      setRight(scene.roles);
-    }
-    setLeft(cleanedLeft);
-  }, [scene, alleRollen]);
+    // if (!scene.roles.length) {
+    //   setRight([]);
+    // } else {
+    //   setRight(scene.roles);
+    // }
+    setRight(scene.roles);
+    // setLeft(initialLeft);
+  }, [scene]);
 
   const leftChecked = intersection(checked, left);
   const rightChecked = intersection(checked, right);
@@ -87,7 +108,11 @@ export default function TransferList({ allRoles, scene, setOpen }) {
   };
 
   const handleUpdate = () => {
-    dispatch(addRolesToScene(scene, right));
+    scene.roles = right;
+    // delete scene.tableData;
+    // const { tableData, ...rest } = scene; // this removes tableData key from scene
+    // console.log("Rest", rest);
+    dispatch(updateScene(scene));
     setOpen(false);
   };
 
@@ -136,6 +161,11 @@ export default function TransferList({ allRoles, scene, setOpen }) {
       className={classes.root}
     >
       <Grid item>{customList(left, "all Roles")}</Grid>
+      {/* <Grid item>
+        {roles.map((role) => (
+          <p>{role.name}</p>
+        ))}
+      </Grid> */}
       <Grid item>
         <Grid container direction="column" alignItems="center">
           {/* <Button

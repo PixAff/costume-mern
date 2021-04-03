@@ -20,7 +20,6 @@ const RoleForm = ({ scene }) => {
   // TODO: Sometimes the script is not beeing populated with scene (workaround:
   // conditional setting of script)
   console.log("RoleForm", scene.script);
-  // const error = useSelector((state) => state.errors);
 
   const [roleData, setRoleData] = useState({
     name: "",
@@ -33,18 +32,7 @@ const RoleForm = ({ scene }) => {
   const dispatch = useDispatch();
   const classes = useStyles();
 
-  // const [category, setCategory] = useState("general");
-
-  // const handleChange = (event) => {
-  //   setCategory(event.target.value);
-  // };
-
-  //   useEffect(() => {
-  //     if (role) setRoleData(role);
-  //   }, [role]);
-
   const clear = () => {
-    // setCurrentId(0);
     setRoleData({
       name: "",
       actor: "",

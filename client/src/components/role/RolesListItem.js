@@ -1,4 +1,3 @@
-import { makeStyles } from "@material-ui/core/styles";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
 import ListItemAvatar from "@material-ui/core/ListItemAvatar";
@@ -7,7 +6,7 @@ import DeleteOutline from "@material-ui/icons/DeleteOutline";
 import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { IconButton, ListItemSecondaryAction } from "@material-ui/core";
-import { deleteRole } from "../../actions/roles";
+import { deleteRole } from "../../slices/roles";
 
 export default function RolesListItem({ role }) {
   const dispatch = useDispatch();
@@ -33,7 +32,10 @@ export default function RolesListItem({ role }) {
       <ListItemAvatar>
         <Avatar alt={role.name} src={role.img}></Avatar>
       </ListItemAvatar>
-      <ListItemText primary={role.name} secondary={role.actor || "unknown"} />
+      <ListItemText
+        primary={role.name}
+        secondary={role.actor || "actor unknown"}
+      />
       <ListItemSecondaryAction>
         <IconButton
           edge="end"

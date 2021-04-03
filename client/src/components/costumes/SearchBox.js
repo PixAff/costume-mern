@@ -1,10 +1,18 @@
 import TextField from "@material-ui/core/TextField";
 import Autocomplete from "@material-ui/lab/Autocomplete";
-import { useState } from "react";
-import { useSelector } from "react-redux";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useParams } from "react-router";
+import { fetchRoles, rolesSelector } from "../../slices/roles";
 
 export default function SearchBox({ setRole }) {
-  const roles = useSelector((state) => state.roles);
+  const { id } = useParams();
+  const { roles, fetched } = useSelector(rolesSelector);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    !fetched && dispatch(fetchRoles(id));
+  }, [dispatch, id, fetched]);
 
   return (
     <>

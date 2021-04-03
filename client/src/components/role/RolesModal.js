@@ -1,11 +1,11 @@
 import { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Modal from "@material-ui/core/Modal";
-import { Button, Chip, Tooltip } from "@material-ui/core";
-import Edit from "@material-ui/icons/Edit";
+import { Chip, Tooltip } from "@material-ui/core";
 import TransferList from "./TransferList";
-import RoleForm from "../role/RoleForm";
 import RoleDialog from "./RoleDialog";
+import { useSelector } from "react-redux";
+import { rolesSelector } from "../../slices/roles";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -26,10 +26,10 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function RolesModal({ scene, allRoles }) {
+export default function RolesModal({ scene }) {
   const classes = useStyles();
+  const { roles } = useSelector(rolesSelector);
   const [open, setOpen] = useState(false);
-
   const handleOpen = () => {
     setOpen(true);
   };
@@ -41,17 +41,7 @@ export default function RolesModal({ scene, allRoles }) {
   const body = (
     <div className={`${classes.paper} `}>
       <h2 id="simple-modal-title">Scene Nr: {scene.sceneNumber}</h2>
-      <TransferList allRoles={allRoles} scene={scene} setOpen={setOpen} />
-      {/* <ButtonGroup disableElevation variant="contained" color="primary">
-        <Button onClick={handleUpdate}>APPLY</Button>
-        <Button className={classes.addButton} onClick={handleUpdate}>
-          ADD
-        </Button>
-        <Button onClick={handleClose} color="secondary">
-          CANCEL
-        </Button>
-      </ButtonGroup> */}
-      {/* <RoleForm scene={scene} /> */}
+      <TransferList scene={scene} roles={roles} setOpen={setOpen} />
       <RoleDialog />
     </div>
   );

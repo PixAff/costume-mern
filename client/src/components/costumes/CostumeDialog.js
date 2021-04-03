@@ -6,17 +6,17 @@ import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogActions from "@material-ui/core/DialogActions";
 import Button from "@material-ui/core/Button";
 import { useState } from "react";
-import { useDispatch } from "react-redux";
-import { SET_ERROR } from "../../constants/actionTypes";
-import { createRole } from "../../actions/roles";
+// import { useDispatch } from "react-redux";
+// import { SET_ERROR } from "../../constants/actionTypes";
+// import { createRole } from "../../actions/roles";
 import { useParams } from "react-router";
 import {
   CircularProgress,
-  FormControl,
-  FormControlLabel,
-  FormLabel,
-  Radio,
-  RadioGroup,
+  // FormControl,
+  // FormControlLabel,
+  // FormLabel,
+  // Radio,
+  // RadioGroup,
 } from "@material-ui/core";
 import axios from "axios";
 
@@ -142,7 +142,7 @@ export default function CostumeDialog({ role }) {
           {previewSource && (
             <img
               src={previewSource}
-              alt="chosen image"
+              alt="chosen"
               style={{ maxHeight: "200px" }}
             />
           )}

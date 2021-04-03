@@ -3,6 +3,7 @@ import Script from "../models/Script.js";
 import Scene from "../models/Scene.js";
 
 export const createScene = async (req, res) => {
+  console.log("TODO: refactor body to hole scene (scene: {...}");
   const { sceneNumber, playDay, mood, place, description, notes } = req.body;
   const script = req.params.scriptid;
 
@@ -20,7 +21,8 @@ export const createScene = async (req, res) => {
 
     res.status(201).json(newScene);
   } catch (error) {
-    res.status(409).json({ message: error.message });
+    console.log(error.errors);
+    res.status(409).json({ message: error.errors });
   }
 };
 
@@ -39,64 +41,30 @@ export const getScenes = async (req, res) => {
   }
 };
 
-// export const getScript = async (req, res) => {
-//   console.log("single");
-//   const { id } = req.params;
-
-//   if (!mongoose.Types.ObjectId.isValid(id))
-//     return res.status(404).send(`No script with id: ${id}`);
-
-//   const script = await Script.findOne({ _id: id });
-
-//   res.json(script);
-// };
-
 export const updateScene = async (req, res) => {
-  const {
-    _id,
-    sceneNumber,
-    playDay,
-    mood,
-    place,
-    description,
-    notes,
-  } = req.body;
-  console.log("TODO: refactor body to hole scene (scene: {...}");
-  if (!mongoose.Types.ObjectId.isValid(_id))
-    return res.status(404).send(`No scene with id: ${_id}`);
-
-  const updatedScene = {
-    sceneNumber,
-    playDay,
-    mood,
-    place,
-    description,
-    notes,
-    _id,
-  };
-
-  await Scene.findByIdAndUpdate(_id, updatedScene, {
-    runValidators: true,
-    new: true,
-  });
-
-  res.status(200).json(updatedScene);
+  const updatedScene = req.body;
+  if (!mongoose.Types.ObjectId.isValid(updatedScene._id))
+    return res.status(404).send(`No scene with id: ${updatedScene._id}`);
+  try {
+    await Scene.findByIdAndUpdate(updatedScene._id, updatedScene, {
+      runValidators: true,
+      new: true,
+    });
+    res.status(200).json(updatedScene);
+  } catch (error) {
+    console.log(error);
+    res.status(409).json({ message: error.message });
+  }
 };
 
 export const deleteScene = async (req, res) => {
-  const scene = await Scene.findByIdAndRemove(
-    { _id: req.params.id },
-    function (err, docs) {
-      // if (err) return handleError(err);
-      if (err) {
-        console.log("ERR", err);
-      } else {
-        console.log("DOCS", docs);
-      }
-    }
-  );
-  // console.log(scene);
-  res.json({ message: `${req.params.id} removed`, id: req.params.id });
+  try {
+    const scene = await Scene.findByIdAndRemove({ _id: req.params.id });
+    res.status(200).json(scene._id);
+  } catch (error) {
+    console.log("ERR", err);
+    res.status(409).json(err);
+  }
 };
 
 export const addRolesToScene = async (req, res) => {

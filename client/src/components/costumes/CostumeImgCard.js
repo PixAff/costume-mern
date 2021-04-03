@@ -6,9 +6,9 @@ import IconButton from "@material-ui/core/IconButton";
 import MoreIcon from "@material-ui/icons/MoreVert";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
-import InfoIcon from "@material-ui/icons/Info";
+// import InfoIcon from "@material-ui/icons/Info";
 // import tileData from "./tileData";
-import DeleteOutline from "@material-ui/icons/DeleteOutline";
+// import DeleteOutline from "@material-ui/icons/DeleteOutline";
 
 import bike from "./images/costumeTest/bike.jpg";
 import { Image } from "cloudinary-react";
@@ -16,7 +16,7 @@ import { useParams } from "react-router";
 import { useEffect, useState } from "react";
 import axios from "axios";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   root: {
     width: "100%",
     display: "flex",
@@ -92,7 +92,12 @@ export default function CostumeImgCard() {
   const [imageIds, setImageIds] = useState();
   const { id } = useParams(); // role ID
 
+  useEffect(() => {
+    loadImages();
+  }, []);
+
   const loadImages = async () => {
+    // TODO: use Redux
     try {
       const res = await axios.get(`/img/${id}`);
       //   const { data } = await res.json();
@@ -120,10 +125,6 @@ export default function CostumeImgCard() {
     }
   };
 
-  useEffect(() => {
-    loadImages();
-  }, []);
-
   return (
     <div className={classes.root}>
       <div className={classes.mainImage}>
@@ -133,44 +134,46 @@ export default function CostumeImgCard() {
           style={{ maxHeight: "100%", maxWidth: "100%" }}
         />
       </div>
-
-      <GridList cellHeight={180} cols={3} className={classes.gridList}>
-        {imageIds &&
-          imageIds.map((imageId, index) => (
-            <GridListTile style={{ width: "270px" }} key={imageId}>
-              <Image
-                // key={imageId}
-                cloudName={"pixelaffairs"}
-                publicId={imageId}
-                width={270}
-                crop="scale"
-                alt={imageId}
-              />
-              <GridListTileBar
-                // title="title"
-                titlePosition="top"
-                actionIcon={
-                  <>
-                    <SimpleMenu
-                      imageId={imageId}
-                      index={index}
-                      deleteImage={deleteImage}
-                    />
-                    <IconButton
-                      aria-label={`star ${"tile.title"}`}
-                      className={classes.icon}
-                      onClick={() => deleteImage(imageId, index)}
-                    >
-                      <MoreIcon />
-                    </IconButton>
-                  </>
-                }
-                actionPosition="right"
-                className={classes.titleBar}
-              />
-            </GridListTile>
-          ))}
-      </GridList>
+      <>
+        {imageIds && (
+          <GridList cellHeight={180} cols={3} className={classes.gridList}>
+            {imageIds.map((imageId, index) => (
+              <GridListTile style={{ width: "270px" }} key={imageId}>
+                <Image
+                  // key={imageId}
+                  cloudName={"pixelaffairs"}
+                  publicId={imageId}
+                  width={270}
+                  crop="scale"
+                  alt={imageId}
+                />
+                <GridListTileBar
+                  // title="title"
+                  titlePosition="top"
+                  actionIcon={
+                    <>
+                      <SimpleMenu
+                        imageId={imageId}
+                        index={index}
+                        deleteImage={deleteImage}
+                      />
+                      <IconButton
+                        aria-label={`star ${"tile.title"}`}
+                        className={classes.icon}
+                        onClick={() => deleteImage(imageId, index)}
+                      >
+                        <MoreIcon />
+                      </IconButton>
+                    </>
+                  }
+                  actionPosition="right"
+                  className={classes.titleBar}
+                />
+              </GridListTile>
+            ))}
+          </GridList>
+        )}
+      </>
     </div>
   );
 }

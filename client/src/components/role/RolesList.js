@@ -1,8 +1,11 @@
 import { makeStyles } from "@material-ui/core/styles";
 import List from "@material-ui/core/List";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Divider } from "@material-ui/core";
 import RolesListItem from "./RolesListItem";
+import { fetchRoles, rolesSelector } from "../../slices/roles";
+import { useEffect } from "react";
+import { useParams } from "react-router";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -13,8 +16,14 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function RolesList() {
-  const roles = useSelector((state) => state.roles);
+  const { id } = useParams();
+  const dispatch = useDispatch();
+  let { roles, fetched } = useSelector(rolesSelector);
   const classes = useStyles();
+
+  useEffect(() => {
+    !fetched && dispatch(fetchRoles(id));
+  }, [dispatch, id, fetched]);
 
   return (
     <List className={classes.root}>

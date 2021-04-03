@@ -6,15 +6,14 @@ import {
   Typography,
 } from "@material-ui/core";
 import MoreHorizIcon from "@material-ui/icons/MoreHoriz";
-import ThumbUpAltIcon from "@material-ui/icons/ThumbUpAlt";
 import DeleteIcon from "@material-ui/icons/Delete";
 import useStyles from "../styles";
 import moment from "moment";
 import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
-import { deleteScript, likeScript } from "../../actions/scripts";
+import { deleteScript, setCurrentId } from "../../slices/scripts";
 
-export default function ScriptCard({ script, setCurrentId }) {
+export default function ScriptCard({ script }) {
   const dispatch = useDispatch();
   const classes = useStyles();
 
@@ -49,21 +48,21 @@ export default function ScriptCard({ script, setCurrentId }) {
         <Button
           style={{ color: "red" }}
           size="small"
-          onClick={() => setCurrentId(script._id)}
+          onClick={() => dispatch(setCurrentId(script._id))}
         >
           <MoreHorizIcon fontSize="default" />
         </Button>
       </div>
 
       <CardActions className={classes.cardActions}>
-        <Button
+        {/* <Button
           size="small"
           color="primary"
           onClick={() => dispatch(likeScript(script._id))}
         >
           <ThumbUpAltIcon fontSize="small" />
           &nbsp; Like {script.liked}
-        </Button>
+        </Button> */}
         <Button size="small" color="primary" onClick={() => handleDelete()}>
           <DeleteIcon fontSize="small" />
           Delete

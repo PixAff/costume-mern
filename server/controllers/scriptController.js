@@ -53,10 +53,10 @@ export const createScript = async (req, res) => {
   const newScript = new Script({ name });
   try {
     await newScript.save();
-
     res.status(201).json(newScript);
   } catch (error) {
-    res.status(409).json({ message: error.message });
+    console.log(error.errors.name.properties.message);
+    res.status(409).json({ message: error.errors });
   }
 };
 
@@ -144,17 +144,26 @@ export const getScript = async (req, res) => {
 // };
 
 export const updateScript = async (req, res) => {
-  const { id } = req.params;
-  const { name } = req.body;
+  // const { id } = req.params;
+  const updateScript = req.body;
 
-  if (!mongoose.Types.ObjectId.isValid(id))
-    return res.status(404).send(`(update) No script with id: ${id}`);
+  if (!mongoose.Types.ObjectId.isValid(updateScript._id))
+    return res
+      .status(404)
+      .send(`(update) No script with id: ${updateScript._id}`);
 
-  const updatedScript = { name, _id: id };
+  // const updatedScript = { name, _id: id };
+  try {
+    await Script.findByIdAndUpdate(updateScript._id, updateScript, {
+      runValidators: true,
+      new: true,
+    });
 
-  await Script.findByIdAndUpdate(id, updatedScript, { new: true });
-
-  res.json(updatedScript);
+    res.status(200).json(updateScript);
+  } catch (error) {
+    console.log("ERR", error);
+    res.status(409).json({ message: error.message });
+  }
 };
 
 async function deleteCorrespondingScenes(script) {
@@ -198,7 +207,7 @@ export const deleteScript = async (req, res) => {
     message["deletedRoles"] = await deleteCorrespondingRoles(script);
     console.log(message);
     // res.json({ message: `${script} removed` });
-    res.json(message);
+    res.status(200).json(message);
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: error });

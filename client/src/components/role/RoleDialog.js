@@ -7,9 +7,7 @@ import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogActions from "@material-ui/core/DialogActions";
 import Button from "@material-ui/core/Button";
 import { useState } from "react";
-import { useDispatch } from "react-redux";
-import { SET_ERROR } from "../../constants/actionTypes";
-import { createRole } from "../../actions/roles";
+import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
 import {
   FormControl,
@@ -18,10 +16,12 @@ import {
   Radio,
   RadioGroup,
 } from "@material-ui/core";
+import { createRole, rolesSelector } from "../../slices/roles";
 
 export default function RoleDialog() {
+  const dispatch = useDispatch();
   const { id } = useParams();
-  console.log(id);
+  const { hasErrors } = useSelector(rolesSelector);
   const [open, setOpen] = useState(false);
   const [roleData, setRoleData] = useState({
     name: "",
@@ -31,26 +31,24 @@ export default function RoleDialog() {
     script: id,
   });
 
-  const dispatch = useDispatch();
-
   const handleClose = () => {
     setRoleData({
       name: "",
       actor: "",
       notes: "",
       category: "general",
-      script: "",
+      script: id,
     });
 
     setOpen(false);
   };
 
   const handleSubmit = (e) => {
+    // TODO: update store scene.roles
     e.preventDefault();
     dispatch(createRole(roleData)).then((res) => {
-      if (res.type !== SET_ERROR) {
-        handleClose();
-      }
+      console.log(hasErrors);
+      if (!hasErrors) handleClose();
     });
   };
 

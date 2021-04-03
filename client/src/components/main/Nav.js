@@ -4,9 +4,8 @@ import Toolbar from "@material-ui/core/Toolbar";
 import Button from "@material-ui/core/Button";
 import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { Box } from "@material-ui/core";
-import { useSelector } from "react-redux";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -23,13 +22,9 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function ButtonAppBar(params) {
+export default function ButtonAppBar() {
   const classes = useStyles();
-  const scenes = useSelector((state) => state.scenes);
-  const roles = useSelector((state) => {
-    console.log(state.roles);
-    return state.roles;
-  });
+  const { id } = useParams();
 
   return (
     <div className={classes.root}>
@@ -69,33 +64,33 @@ export default function ButtonAppBar(params) {
               </Button>
             </Box>
             <Box>
-              {scenes.length > 0 && roles.length > 0 && (
+              {id && (
                 <Button
                   color="inherit"
                   component={Link}
-                  to={`/scripts/${roles[0].script}/scenes`}
+                  to={`/scripts/${id}/scenes`}
                 >
                   Scenes
                 </Button>
               )}
             </Box>
             <Box>
-              {roles.length > 0 && (
+              {id && (
                 <Button
                   color="inherit"
                   component={Link}
-                  to={`/scripts/${roles[0].script}/roles`}
+                  to={`/scripts/${id}/roles`}
                 >
                   Roles
                 </Button>
               )}
             </Box>
             <Box>
-              {roles.length > 0 && (
+              {id && (
                 <Button
                   color="inherit"
                   component={Link}
-                  to={`/scripts/${roles[0].script}/costumes`}
+                  to={`/scripts/${id}/costumes`}
                 >
                   Costumes
                 </Button>

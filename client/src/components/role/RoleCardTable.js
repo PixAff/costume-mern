@@ -1,6 +1,4 @@
-import { useState, useEffect } from "react";
 import { forwardRef } from "react";
-// import Avatar from 'react-avatar';
 import Grid from "@material-ui/core/Grid";
 
 import MaterialTable from "material-table";
@@ -20,11 +18,6 @@ import SaveAlt from "@material-ui/icons/SaveAlt";
 import Search from "@material-ui/icons/Search";
 import ViewColumn from "@material-ui/icons/ViewColumn";
 // import Alert from "@material-ui/lab/Alert";
-import { useDispatch, useSelector } from "react-redux";
-import { createScene, deleteScene, updateScene } from "../../actions/scenes";
-import { Button } from "@material-ui/core";
-import RolesModal from "./RolesModal";
-import { moods } from "../../constants/general";
 
 const tableIcons = {
   Add: forwardRef((props, ref) => (
@@ -128,28 +121,28 @@ function RoleCardTable({ script, scenes }) {
     resolve();
   };
 
-  const handleRowAdd = (newData, resolve) => {
-    // dispatch(createScene(newData, scriptId));
+  // const handleRowAdd = (newData, resolve) => {
+  //   // dispatch(createScene(newData, scriptId));
 
-    resolve();
-  };
+  //   resolve();
+  // };
 
-  function handleRowDelete(oldData, resolve) {
-    // dispatch(deleteScene(oldData._id));
-    // console.log(
-    //   "TODO: sometimes a pagination error appears when the last item of a page gets deleted"
-    // );
-    // .then((res) => {
-    //   // this is neccecary to avoid pagination error
-    //   const scenesDelete = [...scenes];
-    //   const index = oldData.tableData.id;
-    //   scenesDelete.splice(index, 1);
-    //   setScenes([...scenesDelete]);
+  // function handleRowDelete(oldData, resolve) {
+  //   // dispatch(deleteScene(oldData._id));
+  //   // console.log(
+  //   //   "TODO: sometimes a pagination error appears when the last item of a page gets deleted"
+  //   // );
+  //   // .then((res) => {
+  //   //   // this is neccecary to avoid pagination error
+  //   //   const scenesDelete = [...scenes];
+  //   //   const index = oldData.tableData.id;
+  //   //   scenesDelete.splice(index, 1);
+  //   //   setScenes([...scenesDelete]);
 
-    //   resolve();
-    // });
-    resolve();
-  }
+  //   //   resolve();
+  //   // });
+  //   resolve();
+  // }
 
   return (
     <div>

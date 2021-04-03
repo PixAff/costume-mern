@@ -12,34 +12,36 @@ import CostumesPage from "./components/main/CostumesPage";
 const App = () => {
   return (
     <>
-      <Nav />
       <ErrorNotification />
-      <div>
-        <Switch>
-          <Route exact path="/" component={HomePage} />
-          <Route exact path="/scripts" component={ScriptsPage} />
-          <Route
-            exact
-            path="/scripts/:id/scenes"
-            render={(props) => <SingleScript {...props} />}
-          />
-          <Route
-            exact
-            path="/scripts/:id/roles"
-            render={(props) => <RolesPage {...props} />}
-          />
-          <Route
-            exact
-            path="/scripts/:id/role/:id"
-            render={(props) => <SingleRole {...props} />}
-          />
-          <Route
-            exact
-            path="/scripts/:id/costumes"
-            render={(props) => <CostumesPage {...props} />}
-          />
-        </Switch>
-      </div>
+
+      {/* <Nav /> */}
+      <Switch>
+        <Route path="/:page?/:id?" component={Nav} />
+      </Switch>
+      <Switch>
+        <Route exact path="/" component={HomePage} />
+        <Route exact path="/scripts" component={ScriptsPage} />
+        <Route
+          exact
+          path="/scripts/:id/scenes"
+          render={(props) => <SingleScript {...props} />}
+        />
+        <Route
+          exact
+          path="/scripts/:id/roles"
+          render={(props) => <RolesPage {...props} />}
+        />
+        <Route
+          exact
+          path="/scripts/:id/role/:id"
+          render={(props) => <SingleRole {...props} />}
+        />
+        <Route
+          exact
+          path="/scripts/:id/costumes"
+          render={(props) => <CostumesPage {...props} />}
+        />
+      </Switch>
     </>
   );
 };

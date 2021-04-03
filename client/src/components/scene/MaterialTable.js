@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { forwardRef } from "react";
 // import Avatar from 'react-avatar';
 import Grid from "@material-ui/core/Grid";
@@ -21,12 +21,17 @@ import Search from "@material-ui/icons/Search";
 import ViewColumn from "@material-ui/icons/ViewColumn";
 // import Alert from "@material-ui/lab/Alert";
 import { useDispatch, useSelector } from "react-redux";
-import { createScene, deleteScene, updateScene } from "../../actions/scenes";
-import { Button, Chip, makeStyles } from "@material-ui/core";
+import { Chip, makeStyles } from "@material-ui/core";
 import RolesModal from "../role/RolesModal";
 import { moods } from "../../constants/general";
-import { Link } from "react-router-dom";
-import classNames from "classnames";
+import { Link, useParams } from "react-router-dom";
+// import classNames from "classnames";
+import {
+  createScene,
+  deleteScene,
+  scenesSelector,
+  updateScene,
+} from "../../slices/scenes";
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -77,22 +82,28 @@ const tableIcons = {
   ViewColumn: forwardRef((props, ref) => <ViewColumn {...props} ref={ref} />),
 };
 
-function MaterialTables({ script }) {
+function MaterialTables() {
+  const { id } = useParams();
   const classes = useStyles();
   const dispatch = useDispatch();
-  const [scenes, setScenes] = useState([]);
-  const [allRoles, setAllRoles] = useState([]);
-  const fetchedScenes = useSelector((state) =>
-    state.scenes.sort((a, b) => a.sceneNumber - b.sceneNumber)
+  // const [scenes, setScenes] = useState([]);
+  // const [allRoles, setAllRoles] = useState([]);
+  // const fetchedScenes = useSelector(
+  //   scenesSelector.sort((a, b) => a.sceneNumber - b.sceneNumber) || []
+  // );
+  let { scenes } = useSelector(scenesSelector);
+  // TODO: this hack is neccessary since material table does not work well with immer
+  // see: https://stackoverflow.com/questions/59648434/material-table-typeerror-cannot-add-property-tabledata-object-is-not-extensibl
+  scenes = JSON.parse(JSON.stringify(scenes)).sort(
+    (a, b) => a.sceneNumber - b.sceneNumber
   );
-  const fetchedRoles = useSelector((state) => state.roles);
-  const scriptId = script._id;
 
   useEffect(() => {
-    setScenes(fetchedScenes);
-    setAllRoles(fetchedRoles);
-    console.log("fetch");
-  }, [fetchedScenes, fetchedRoles]);
+    console.log(scenes);
+    // setScenes(fetchedScenes);
+    // console.log("gshdgsh", fetchedScenes);
+    // setAllRoles(fetchedRoles);
+  }, [scenes]);
 
   const columns = [
     { title: "id", field: "_id", width: "0px", hidden: true },
@@ -187,7 +198,7 @@ function MaterialTables({ script }) {
           <RolesModal
             key={rowData.tableData.id}
             scene={rowData}
-            allRoles={allRoles}
+            // allRoles={allRoles}
           />
           {rowData.roles &&
             rowData.roles.map((role) => (
@@ -207,7 +218,7 @@ function MaterialTables({ script }) {
                 variant={role.category === "main" ? "default" : "outlined"}
                 component={Link}
                 to={{
-                  pathname: `/scripts/${role.script}/role/${role._id}`,
+                  pathname: `/scripts/${id}/role/${role._id}`,
                   state: { role },
                 }}
               />
@@ -218,50 +229,8 @@ function MaterialTables({ script }) {
     },
   ];
 
-  // const detailPanel = [
-  //   {
-  //     tooltip: "ROLES",
-  //     icon: tableIcons.DetailPanel,
-  //     render: (rowData) => {
-  //       return (
-  //         <Grid
-  //           container
-  //           style={{
-  //             fontSize: 16,
-  //             textAlign: "center",
-  //             color: "white",
-  //             backgroundColor: "#AAAAAA",
-  //           }}
-  //         >
-  //           <Grid item xs={1}>
-  //             <RolesModal
-  //               key={rowData.tableData.id}
-  //               scene={rowData}
-  //               allRoles={allRoles}
-  //             />
-  //           </Grid>
-  //           <Grid item xs={11}>
-  //             <div>
-  //               {rowData.roles &&
-  //                 rowData.roles.map((role) => (
-  //                   <Chip
-  //                     label={role.name}
-  //                     key={role._id}
-  //                     color="primary"
-  //                     clickable
-  //                     variant="outlined"
-  //                   />
-  //                 ))}
-  //             </div>
-  //           </Grid>
-  //         </Grid>
-  //       );
-  //     },
-  //   },
-  // ];
-
   const handleRowUpdate = (newData, oldData, resolve) => {
-    // console.log("TODO: parseInt from Material Table in the first place");
+    // TODO: change sceneNumber to string (scene 1A, 1B, etc)
     newData.sceneNumber = parseInt(newData.sceneNumber);
     newData.playDay = parseInt(newData.playDay);
     dispatch(updateScene(newData));
@@ -270,25 +239,15 @@ function MaterialTables({ script }) {
   };
 
   const handleRowAdd = (newData, resolve) => {
-    dispatch(createScene(newData, scriptId));
+    dispatch(createScene({ newData, id }));
 
     resolve();
   };
 
   function handleRowDelete(oldData, resolve) {
     dispatch(deleteScene(oldData._id));
-    console.log(
-      "TODO: sometimes a pagination error appears when the last item of a page gets deleted"
-    );
-    // .then((res) => {
-    //   // this is neccecary to avoid pagination error
-    //   const scenesDelete = [...scenes];
-    //   const index = oldData.tableData.id;
-    //   scenesDelete.splice(index, 1);
-    //   setScenes([...scenesDelete]);
-
-    //   resolve();
-    // });
+    // TODO: sometimes a pagination error appears when the last item of a page gets deleted"
+    // SHOULD BE FIXED WITH redux toolkit refactor
     resolve();
   }
 
@@ -297,7 +256,7 @@ function MaterialTables({ script }) {
       <Grid container spacing={1} className={classes.root}>
         <Grid item xs={12}>
           <MaterialTable
-            title={`Script - ${script.name}`}
+            title={`Script - ${"get script name here!"}`}
             columns={columns}
             data={scenes}
             // detailPanel={detailPanel}

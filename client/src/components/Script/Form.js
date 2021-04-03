@@ -1,35 +1,44 @@
 import { useEffect, useState } from "react";
 import { Button, Paper, TextField, Typography } from "@material-ui/core";
 import { useDispatch, useSelector } from "react-redux";
+import {
+  createScript,
+  scriptsSelector,
+  setCurrentId,
+  updateScript,
+} from "../../slices/scripts";
 
 import useStyles from "../styles";
-import { createScript, updateScript } from "../../actions/scripts";
+// import { updateScript } from "../../actions/scripts";
 
-const Form = ({ currentId, setCurrentId }) => {
+const Form = () => {
+  // TODO: refactor form to use redux (store)
   const [scriptData, setScriptData] = useState({ name: "" });
-  const script = useSelector((state) =>
-    currentId ? state.scripts.find((script) => script._id === currentId) : null
+  const { currentId } = useSelector(scriptsSelector);
+  const script = useSelector(scriptsSelector).scripts.find(
+    (script) => script._id === currentId
   );
   const dispatch = useDispatch();
   const classes = useStyles();
 
   useEffect(() => {
+    console.log(currentId, script);
     if (script) setScriptData(script);
-  }, [script]);
+  }, [script, currentId]);
 
   const clear = () => {
-    setCurrentId(0);
+    dispatch(setCurrentId(null));
     setScriptData({ name: "" });
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (currentId === 0) {
+    if (currentId === null) {
       dispatch(createScript(scriptData));
       clear();
     } else {
-      dispatch(updateScript(currentId, scriptData));
+      dispatch(updateScript({ id: currentId, script: scriptData }));
       clear();
     }
   };
@@ -62,7 +71,7 @@ const Form = ({ currentId, setCurrentId }) => {
             size="large"
             type="submit"
           >
-            Create
+            {currentId ? "Submit" : "Create"}
           </Button>
 
           <Button

@@ -10,6 +10,7 @@ const sceneSchema = mongoose.Schema({
   playDay: {
     type: Number,
     default: 0,
+    required: "Please enter a play day!",
   },
   mood: {
     type: String,

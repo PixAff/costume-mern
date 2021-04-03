@@ -6,6 +6,7 @@ import RolesListItem from "../role/RolesListItem";
 
 export default function CostumesPage() {
   const [role, setRole] = useState();
+
   return (
     <Box mx={2}>
       <SearchBox setRole={setRole} />

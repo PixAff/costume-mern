@@ -1,27 +1,41 @@
 import { Box, CircularProgress, Grid } from "@material-ui/core";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { clearRoles } from "../../actions/roles";
-import { clearScenes } from "../../actions/scenes";
 import TheButton from "../pdf/PdfTest";
 import useStyles from "../styles";
 
+import { fetchScripts, scriptsSelector } from "../../slices/scripts";
+
 import ScriptCard from "./ScriptCard";
+import { resetScenes } from "../../slices/scenes";
+import { resetRoles } from "../../slices/roles";
 
 export default function Scripts({ setCurrentId }) {
-  const scripts = useSelector((state) => state.scripts);
+  const { scripts, loading, hasErrors } = useSelector(scriptsSelector);
   const classes = useStyles();
   const dispatch = useDispatch();
 
   useEffect(() => {
-    console.log("UE from Scripts");
-    dispatch(clearScenes());
-    dispatch(clearRoles());
-  }, []);
+    dispatch(resetScenes());
+    dispatch(resetRoles());
+    if (!scripts.length) {
+      dispatch(fetchScripts());
+      console.log("Scripts");
+    }
+  }, [dispatch, scripts]);
 
-  return !scripts.length ? (
-    <CircularProgress />
-  ) : (
+  const renderScripts = () => {
+    if (loading) return <CircularProgress />;
+    if (hasErrors) return <p>Something went wrong</p>;
+
+    return scripts.map((script) => (
+      <Grid key={script._id} item xs={12}>
+        <ScriptCard script={script} setCurrentId={setCurrentId} />
+      </Grid>
+    ));
+  };
+
+  return (
     <Grid
       className={classes.container}
       container
@@ -29,11 +43,7 @@ export default function Scripts({ setCurrentId }) {
       alignItems="stretch"
       spacing={3}
     >
-      {scripts.map((script) => (
-        <Grid key={script._id} item xs={12}>
-          <ScriptCard script={script} setCurrentId={setCurrentId} />
-        </Grid>
-      ))}
+      {renderScripts()}
       <Box mx={2}>
         <TheButton script={scripts} />
       </Box>

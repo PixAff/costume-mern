@@ -7,20 +7,19 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import Slide from "@material-ui/core/Slide";
 import { forwardRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { HIDE_ERROR } from "../../constants/actionTypes";
+import { errorsSelector, clearError } from "../../slices/errors";
 
 const Transition = forwardRef(function Transition(props, ref) {
   return <Slide direction="down" ref={ref} {...props} />;
 });
 
 export default function ErrorNotification() {
-  const isOpen = useSelector((state) => state.errors.isOpen);
-  const errors = useSelector((state) => state.errors.error);
+  const { isOpen, errors } = useSelector(errorsSelector);
 
   const dispatch = useDispatch();
 
   function handleClose() {
-    dispatch({ type: HIDE_ERROR });
+    dispatch(clearError());
   }
 
   return (
@@ -42,10 +41,10 @@ export default function ErrorNotification() {
               {/* <DialogContentText id="alert-dialog-slide-description"> */}
               {errors.map((error) => (
                 <DialogContentText
-                  key={error.path}
+                  key={error}
                   id="alert-dialog-slide-description"
                 >
-                  {error.msg}
+                  {error}
                 </DialogContentText>
               ))}
               {/* </DialogContentText> */}
